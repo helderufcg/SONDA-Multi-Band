@@ -1,4 +1,4 @@
-from PhysicalConstants import h, freq, BRef
+from PhysicalConstants import h, freqC, BRef
 from UnitConversion import db_to_abs
 
 """
@@ -22,7 +22,8 @@ class BoosterAmplifier:
         self.gain = SSS_loss #DEFINIU-SE O GAMNHO DO AMPLIFICADOR IGUAL À PERDA SSS (5db)
         return self.gain
 
-    def Noise(self, SSS_loss):    
+    #Dependente da frequência
+    def Noise(self, SSS_loss):
         # This is the ASE Noise Modelling
-        noise = self.noise_figure * h * freq * BRef * (self.Gain(SSS_loss) - 1)
+        noise = self.noise_figure * h * freqC * BRef * (self.Gain(SSS_loss) - 1)
         return noise

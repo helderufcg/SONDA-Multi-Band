@@ -1,4 +1,4 @@
-from PhysicalConstants import h, freq, BRef 
+from PhysicalConstants import h, freqC, BRef 
 from UnitConversion import db_to_abs
 import math
 
@@ -28,8 +28,9 @@ class InLineAmplifier:
 
         namp = math.ceil((dij/damp) - 1)
         return namp
-
+    
+    #Dependente da frequência
     def Noise(self, fiber_loss, dij, damp):        
         # This is the ASE Noise Modelling        
-        noise = self.NumberOfInlineAmplifiers(dij, damp) * self.noise_figure * h * freq * BRef * (1 - (fiber_loss**(-1/(1 + self.NumberOfInlineAmplifiers(dij, damp)))))
+        noise = self.NumberOfInlineAmplifiers(dij, damp) * self.noise_figure * h * freqC * BRef * (1 - (fiber_loss**(-1/(1 + self.NumberOfInlineAmplifiers(dij, damp)))))
         return noise
