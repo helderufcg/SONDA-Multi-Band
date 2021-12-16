@@ -1,4 +1,4 @@
-from PhysicalConstants import h, freqC, BRef 
+from PhysicalConstants import h, freqS, freqC, freqL, freqO, BRef 
 from UnitConversion import db_to_abs
 import math
 
