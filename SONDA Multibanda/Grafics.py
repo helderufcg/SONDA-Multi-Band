@@ -23,6 +23,7 @@ class Grafics:
         plt.grid(True)
         plt.show()
         plt.figure(1)
+        print(BP,"\n",load)
 
     @staticmethod
     def plot_boxplot(columns):    

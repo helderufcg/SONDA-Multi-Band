@@ -1,8 +1,8 @@
 """
     c: light's velocity.
     h: Planck's constant.
-    l: light's wavelength.
-    freq: light's frequency. -> Frequências centrais das grades
+    L: light's wavelength.
+    Freq: light's frequency. -> Frequências centrais das grades
     BRef:  reference bandwidth.
     numPolarizations: is used to choose whether one or two polarizations are used to transmit the signal.
         
@@ -11,23 +11,23 @@
 c = 299792458 
 h = 6.62606957E-34
 
-lS  = 1510E-9 #1510 nm BANDA S 
-lSC = 1530E-9 #1530 nm BANDA S+C
-lC  = 1550E-9 #1550 nm BANDA C
-lCL = 1570E-9 #1570 nm BANDA C+L
-lL  = 1590E-9 #1590 nm BANDA L
+#Comprimento de onda inicial de cada banda
 
-lO  = 1270E-9 #1270 nm BANDA O
+LO = 1260E-9 #1260 nm BANDA O
+LE = 1360E-9 #1360 nm BANDA S
+LS = 1460E-9 #1460 nm BANDA S
+LC = 1530E-9 #1530 nm BANDA C
+LL = 1565E-9 #1565 nm BANDA L
+LU = 1625E-9 #1625 nm BANDA U
 
-freqS  = 198.54E12 #198.54 THz BANDA S
-freqSC = 195.94E12 #195.94 THz BANDA S+C
-freqC  = 193.41E12 #193.41 THz BANDA C
-freqCL = 190.95E12 #190.95 THz BANDA C+L
-freqL  = 188.55E12 #188.55 THz BANDA L
-
-freqO = 236.06E12 #236.06 THz BANDA O
+FreqO = 237.93E12 #237.93 THz BANDA O
+FreqE = 220.44E12 #220.44 THz BANDA E
+FreqS = 205.34E12 #205.34 THz BANDA S
+FreqC = 195.94E12 #195.94 THz BANDA C
+FreqL = 191.56E12 #191.56 THz BANDA L
+FreqU = 184.49E12 #184.49 THz BANDA U
 
 BRef = 12.5E9 #12.5 Gbps
-BSlot = 12.5E9
+BSlot = 12.5E9 #Tamanho espectral do slot
 
 numPolarizations = 2

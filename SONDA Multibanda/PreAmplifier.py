@@ -1,4 +1,4 @@
-from PhysicalConstants import h, freqS, freqC, freqL, freqO, BRef
+from PhysicalConstants import h, FreqC, BRef
 from UnitConversion import db_to_abs
 
 """
@@ -26,5 +26,5 @@ class PreAmplifier:
     #Dependente da frequência
     def Noise(self, fiber_loss, namp, SSS_loss):
         # This is the ASE Noise Modelling
-        noise = self.noise_figure * h * freqC * BRef * (self.Gain(fiber_loss, namp, SSS_loss) - 1)
+        noise = self.noise_figure * h * FreqC * BRef * (self.Gain(fiber_loss, namp, SSS_loss) - 1)
         return noise
