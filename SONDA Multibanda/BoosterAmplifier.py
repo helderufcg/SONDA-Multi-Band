@@ -19,7 +19,7 @@ class BoosterAmplifier:
         self.noise_figure = noise_figure 
 
     def Gain(self, SSS_loss): 
-        self.gain = SSS_loss #DEFINIU-SE O GAMNHO DO AMPLIFICADOR IGUAL À PERDA SSS (5db)
+        self.gain = SSS_loss #DEFINIU-SE O GANHO DO AMPLIFICADOR IGUAL À PERDA SSS (5db)
         return self.gain
 
     #Dependente da frequência
