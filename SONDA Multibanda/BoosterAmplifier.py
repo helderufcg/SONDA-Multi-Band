@@ -8,7 +8,7 @@ architecture it is on the node's exit.
 This amplifier compensates for the loss on the SSS device in the node's exit.
 """
 
-class BoosterAmplifier:
+class BoosterAmplifier: #Amplificador de potência (Nó inicial)
 
     def __init__(self, noise_figure = db_to_abs(5)):
 

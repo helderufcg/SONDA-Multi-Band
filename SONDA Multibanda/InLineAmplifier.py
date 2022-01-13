@@ -9,7 +9,7 @@ Those amplifiers are scattered through the fiber. Each amplifier compensates
 for the loss in the precedent fiber segment.
 """
 
-class InLineAmplifier:
+class InLineAmplifier: #Amplificadores de linha (Ao longo da rede, separados por um "D-amp")
 
     def __init__(self, noise_figure = db_to_abs(5)):
 

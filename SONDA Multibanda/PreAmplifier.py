@@ -9,7 +9,7 @@ compensates for the loss in the precedent fiber segment and for the loss in
 the succedent switching element (either a SSS or a Splitter).
 """
 
-class PreAmplifier:
+class PreAmplifier: #Pré-amplificador (Nó final)
 
     def __init__(self, noise_figure = db_to_abs(5)):
 
