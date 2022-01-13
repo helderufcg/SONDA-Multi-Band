@@ -11,7 +11,7 @@
 c = 299792458 
 h = 6.62606957E-34
 
-#Comprimento de onda inicial de cada banda
+#Comprimento de onda inicial
 
 LO = 1260E-9 #1260 nm BANDA O
 LE = 1360E-9 #1360 nm BANDA S
