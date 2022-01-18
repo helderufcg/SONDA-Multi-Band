@@ -1,3 +1,4 @@
+import os
 from Topology import *
 from RoutingWavelengthAssignment import RWA
 from Simulation_NetworkLoad import Simulation_NetworkLoad
@@ -5,8 +6,10 @@ from Grafics import Grafics
 import multiprocessing as mp
 import time
 
-def main():
+os.system('cls')
 
+def main():
+        
         # --------------- Simualtion Types ------------------
         print('\n1 - Network load variation with fixed number of calls  \n2 - Network load variation with fixed number of blockages \n3 - Percentage variation on the network traffic load \n4 - BER variation')
         simualtion_type = int(input('\n>>> Define a simulation to run: '))
