@@ -14,6 +14,7 @@ class Grafics:
 
     @staticmethod
     def plot_blocking_probability(load_bp):
+        sorted(load_bp)
         load, BP = zip(*load_bp)
         plt.plot(load, BP, marker='s', markersize = 8, markeredgewidth = 5, markerfacecolor = 'w', linewidth = 5, label = 'Dijkstra + First Fit')
         plt.yscale('log')
@@ -23,7 +24,6 @@ class Grafics:
         plt.grid(True)
         plt.show()
         plt.figure(1)
-        print(BP,"\n",load)
 
     @staticmethod
     def plot_boxplot(columns):    

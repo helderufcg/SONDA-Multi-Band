@@ -7,7 +7,7 @@ import multiprocessing as mp
 import time
 
 os.system('cls')
-
+#aokdoaskdooakpsdko
 def main():
         
         # --------------- Simualtion Types ------------------
@@ -64,14 +64,17 @@ def main():
                         damp = None                       
                 else:        
                         wavelength_bandwidth = None
-                        consider_ase_noise = int(input('\n>>> Consider ASE noise? (0 - No | 1 - Yes): '))
-                        if consider_ase_noise == 0 or consider_ase_noise == 1:
-                                pass
-                        else:        
-                                raise ValueError('The option entered is invalid.')  
-                        damp = float(input('\n>>> Enter the distance between inline amplifiers in Km: '))
-                        if damp < 0:
-                                raise ValueError('The distance between inline amplifiers must be positive.')
+
+                consider_ase_noise = int(input('\n>>> Consider ASE noise? (0 - No | 1 - Yes): '))
+                if consider_ase_noise == 0 or consider_ase_noise == 1:
+                        pass
+                else:        
+                        raise ValueError('The option entered is invalid.')
+ 
+                damp = float(input('\n>>> Enter the distance between inline amplifiers in Km: '))
+                if damp < 0:
+                        raise ValueError('The distance between inline amplifiers must be positive.')
+        
         else:
                 raise ValueError('Invalid network type.')
 
