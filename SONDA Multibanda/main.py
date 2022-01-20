@@ -7,7 +7,7 @@ import multiprocessing as mp
 import time
 
 os.system('cls')
-#aokdoaskdooakpsdko
+
 def main():
         
         # --------------- Simualtion Types ------------------
@@ -74,7 +74,7 @@ def main():
                 damp = float(input('\n>>> Enter the distance between inline amplifiers in Km: '))
                 if damp < 0:
                         raise ValueError('The distance between inline amplifiers must be positive.')
-        
+
         else:
                 raise ValueError('Invalid network type.')
 

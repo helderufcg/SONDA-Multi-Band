@@ -56,7 +56,7 @@ class RWA:
             SNRb = modulation.SNRb04
             
         if network_type == 1:
-            required_slots = math.ceil((wavelength_bandwidth*10**9)/BSlot) #wavelength em GHz e Bslot = 12.5Ghz
+            required_slots = math.ceil((wavelength_bandwidth*10**9)/BSlot) #Bslot = 12.5 GHz
         else:            
             if consider_ase_noise == 0:
                 required_slots = modulation.RequiredSlots(bit_rate, BSlot, M[0])
