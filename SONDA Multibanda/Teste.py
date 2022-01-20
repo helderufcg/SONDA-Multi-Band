@@ -1,7 +1,10 @@
-from band_selection import *
+from Band_Selection import *
 from PhysicalConstants import *
 
 Banda = BandSelection()
 
-a = Banda.getBandwidthE()
-print(a/12.5E9)
+print(Banda.getSlots_O_G652(),"\n")
+print(Banda.getSlots_E_G652(),"\n")
+print(Banda.getSlots_S_G652(),"\n")
+print(Banda.getSlots_C_G652(),"\n")
+print(Banda.getSlots_L_G652(),"\n")

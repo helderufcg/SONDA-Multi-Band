@@ -1,5 +1,6 @@
 import os
 from Topology import *
+from Band_Selection import *
 from RoutingWavelengthAssignment import RWA
 from Simulation_NetworkLoad import Simulation_NetworkLoad
 from Grafics import Grafics
@@ -51,6 +52,41 @@ def main():
                 links = linksUSBackbone         
         else:
                 raise ValueError('Invalid network topology.')
+
+        # --------------- Fiber selection ------------------
+        print('\n1 - ITU-T G652 \n2 - Conventional ')       
+        fiber = int(input('\n>>> Select fiber type: '))
+        if fiber > 2 or fiber < 1:
+                raise ValueError('Invalid fiber type.')
+        # --------------- Band selection ------------------
+        cont = 1
+        all_slots = 0
+        band_sel = BandSelection()
+
+        if fiber == 1:
+                while(cont!=0):
+                        print('\n1 - O-Band \n2 - E-Band \n3 - S-Band \n4 - C-Band \n5 - L-Band \n6 - Close')
+                        band = int(input('\n>>> Select the bands (One at a time): '))
+
+                        if band == 1:
+                                all_slots = all_slots + len(band_sel.getSlots_O_G652())
+                        elif band ==2:
+                                all_slots = all_slots + len(band_sel.getSlots_E_G652())
+                        elif band ==3:
+                                all_slots = all_slots + len(band_sel.getSlots_S_G652())
+                        elif band ==4:
+                                all_slots = all_slots + len(band_sel.getSlots_C_G652())
+                        elif band ==5:
+                                all_slots = all_slots + len(band_sel.getSlots_L_G652())
+                        elif band == 6:
+                                cont = 0
+                        else:
+                                raise ValueError('Invalid band.')
+
+        else:
+                pass
+        
+        band_sel.setAll_slots(all_slots) #Passa o número de slots definido pela escolha das bandas
 
         # --------------- Network Types ------------------
         print('\n1 - WDM  \n2 - EON')    

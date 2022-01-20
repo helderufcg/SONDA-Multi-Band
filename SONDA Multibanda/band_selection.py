@@ -8,6 +8,8 @@ def w(f0):
     return Ag652*math.exp(f0)
 op = np.vectorize(w)
 
+
+
 class BandSelection:
     def __init__(self):
         pass
@@ -65,3 +67,6 @@ class BandSelection:
     #Fibra Convencional
 
     
+    #Set all_slots
+    def setAll_slots(self,slots):
+        all_slots = slots

@@ -1,4 +1,5 @@
 import numpy as np
+from Band_Selection import all_slots
 
 global n_slots
 n_slots = 32
@@ -11,7 +12,7 @@ capable of containing the requisition.
 
 class FirstFit:
 
-    def __init__(self):  
+    def __init__(self):
         pass
 
     def VerifyContiguity(self, vector):
