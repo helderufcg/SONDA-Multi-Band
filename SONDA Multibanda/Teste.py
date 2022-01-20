@@ -4,4 +4,4 @@ from PhysicalConstants import *
 Banda = BandSelection()
 
 a = Banda.getBandwidthE()
-print(a+1)
+print(a/12.5E9)

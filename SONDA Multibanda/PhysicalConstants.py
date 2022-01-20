@@ -36,9 +36,6 @@ BandE = 15.098E12
 BandS = 9.395E12
 BandC = 4.382E12
 BandL = 7.073E12
-#BandU = 
- 
-
 
 BRef = 12.5E9 #12.5 Gbps
 BSlot = 12.5E9 #Tamanho espectral do slot
