@@ -1,4 +1,4 @@
-from PhysicalConstants import h, FreqC, BRef
+from PhysicalConstants import h, FcentralC, BRef
 from UnitConversion import db_to_abs
 
 """
@@ -9,7 +9,7 @@ compensates for the loss in the precedent fiber segment and for the loss in
 the succedent switching element (either a SSS or a Splitter).
 """
 
-class PreAmplifier: #Pré-amplificador (Nó final)
+class PreAmplifier:
 
     def __init__(self, noise_figure = db_to_abs(5)):
 
@@ -22,9 +22,8 @@ class PreAmplifier: #Pré-amplificador (Nó final)
     def Gain(self, fiber_loss, namp, SSS_loss):
         self.gain = (fiber_loss**(1/(1+namp))) * SSS_loss
         return self.gain
-    
-    #Dependente da frequência
-    def Noise(self, fiber_loss, namp, SSS_loss):
+
+    def Noise(self, fiber_loss, namp, SSS_loss):    
         # This is the ASE Noise Modelling
-        noise = self.noise_figure * h * FreqC * BRef * (self.Gain(fiber_loss, namp, SSS_loss) - 1)
+        noise = self.noise_figure * h * FcentralC * BRef * (self.Gain(fiber_loss, namp, SSS_loss) - 1)
         return noise

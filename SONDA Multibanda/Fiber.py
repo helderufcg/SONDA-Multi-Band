@@ -6,7 +6,7 @@ The Fiber class represents a Fiber segment.
 
 class Fiber:
 
-    def __init__(self, alpha_fiber = 0.22):
+    def __init__(self, alpha_fiber = 0.90):
         
         """
         :param alpha_fiber: fiber loss coefficient, measured in dB per kilometer

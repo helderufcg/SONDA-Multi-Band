@@ -1,68 +1,68 @@
-from PhysicalConstants import *
-
+from BandConstants import *
+from BandData import amostra_aten, amostra_freq, amostra_freq_dry, amostra_aten_dry
 import math
 import numpy as np
+from scipy.interpolate import interp1d
 
-Ag652 = 1.108*10**(-2)
-
-def w(f0):
-    return Ag652*math.exp(f0)
-op = np.vectorize(w)
-
+Ag652A = interp1d(amostra_freq, amostra_aten, kind='cubic') #Attenuation OH peak fiber
+Ag652D = interp1d(amostra_freq_dry, amostra_aten_dry, kind='cubic') #Attenuation dry fiber
 
 class Band_Selection:
     def __init__(self):
         pass
     
-    #Retorna a largura de banda
+    def getSlotsAttenuation(self,fiber,Freq):
+        if fiber == 1:
+            A = Ag652D(Freq)
+            return A
+        elif fiber == 2:
+            A = Ag652A(Freq)
+            return A
+        else:
+            return 0
+
+    def getSlotsAttenuation_O(self,fiber):
+        slots_O = FO 
+        if fiber == 1:
+            AO = Ag652D(slots_O)
+            return AO
+        else:
+            AO = Ag652A(slots_O)
+            return AO
+
+    def getSlotsAttenuation_E(self,fiber):
+        slots_E = FE 
+        if fiber == 1:
+            AE = Ag652D(slots_E)
+            return AE
+        else:
+            AE = Ag652A(slots_E)
+            return AE
+
+    def getSlotsAttenuation_S(self,fiber):
+        slots_S = FS 
+        if fiber == 1:
+            AS = Ag652D(slots_S)
+            return AS
+        else:
+            AS = Ag652A(slots_S)
+            return AS
     
-    def getBandwidthO(self):
-        result = c * ((1/LO) - (1/LE))
-        return(result)
+    def getSlotsAttenuation_C(self,fiber):
+        slots_C = FC 
+        if fiber == 1:
+            AC = Ag652D(slots_C)
+            return AC
+        else:
+            AC = Ag652A(slots_C)
+            return AC
 
-    def getBandwidthE(self):
-        result = c * ((1/LE) - (1/LS))
-        return(result)
-
-    def getBandwidthS(self):
-        result = c * ((1/LS) - (1/LC))
-        return(result)
-
-    def getBandwidthC(self):
-        result = c * ((1/LC) - (1/LL))
-        return(result)
-
-    def getBandwidthL(self):
-        result = c * ((1/LL) - (1/LU))
-        return(result)
-
-    #Slots com sua respectiva atenuação
-    #Fibra ITU-T G652
-
-    def getSlots_O_G652(self):
-        slots_O = np.arange(FreqO,FreqE,-BSlot)
-        atenuaO=op((slots_O*4582E-9)/c)
-        return atenuaO
-
-    def getSlots_E_G652(self):
-        slots_E = np.arange(FreqE,FreqS,-BSlot)
-        atenuaO=op((slots_E*4582E-9)/c)
-        return atenuaO
-
-    def getSlots_S_G652(self):
-        slots_S = np.arange(FreqS,FreqC,-BSlot)
-        atenuaO=op((slots_S*4582E-9)/c)
-        return atenuaO
-
-    def getSlots_C_G652(self):
-        slots_C = np.arange(FreqC,FreqL,-BSlot)
-        atenuaO=op((slots_C*4582E-9)/c)
-        return atenuaO
-
-    def getSlots_L_G652(self):
-        slots_L = np.arange(FreqL,FreqU,-BSlot)
-        atenuaO=op((slots_L*4582E-9)/c)
-        return atenuaO
-
-    #Fibra Convencional
+    def getSlotsAttenuation_L(self,fiber):
+        slots_L = FL 
+        if fiber == 1:
+            AL = Ag652D(slots_L)
+            return AL
+        else:
+            AL = Ag652A(slots_L)
+            return AL
     

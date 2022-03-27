@@ -1,4 +1,4 @@
-from PhysicalConstants import h, FreqC, BRef 
+from PhysicalConstants import h, FcentralC, BRef 
 from UnitConversion import db_to_abs
 import math
 
@@ -9,7 +9,7 @@ Those amplifiers are scattered through the fiber. Each amplifier compensates
 for the loss in the precedent fiber segment.
 """
 
-class InLineAmplifier: #Amplificadores de linha (Ao longo da rede, separados por um "D-amp")
+class InLineAmplifier:
 
     def __init__(self, noise_figure = db_to_abs(5)):
 
@@ -28,9 +28,8 @@ class InLineAmplifier: #Amplificadores de linha (Ao longo da rede, separados por
 
         namp = math.ceil((dij/damp) - 1)
         return namp
-    
-    #Dependente da frequência
+
     def Noise(self, fiber_loss, dij, damp):        
         # This is the ASE Noise Modelling        
-        noise = self.NumberOfInlineAmplifiers(dij, damp) * self.noise_figure * h * FreqC * BRef * (1 - (fiber_loss**(-1/(1 + self.NumberOfInlineAmplifiers(dij, damp)))))
+        noise = self.NumberOfInlineAmplifiers(dij, damp) * self.noise_figure * h * FcentralC * BRef * (1 - (fiber_loss**(-1/(1 + self.NumberOfInlineAmplifiers(dij, damp)))))
         return noise

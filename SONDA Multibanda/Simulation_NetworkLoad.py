@@ -1,5 +1,6 @@
 from CallGenerator import Call
-from RoutingWavelengthAssignment import RWA
+from RoutingWavelengthAssignment import RWA #, n_slots
+from FirstFit_ResourceAlgorithm import *
 import random
 from prettytable import PrettyTable
 import pandas as pd
@@ -15,7 +16,7 @@ or slot blocking probability.
 
 class Simulation_NetworkLoad:
 
-    def __init__(self,n_slots):
+    def __init__(self,n_slots): #
         self.n_slots = n_slots
         pass
 
@@ -28,6 +29,7 @@ class Simulation_NetworkLoad:
 
     def FixedCalls(self, load, n_calls, n_nodes, links, A, N, T, network_type, wavelength_bandwidth, consider_ase_noise, damp):
         call = Call(n_nodes, load, 1)
+        first_fit = FirstFit(self.n_slots)
         rwa = RWA()
         count_block = 0
         number = 1
@@ -40,12 +42,12 @@ class Simulation_NetworkLoad:
             interarrival_time = call.InterarrivalTime()
             duration_time = call.DurationTime()
 
-            count_block += rwa.RWA(A, N, T, src_node, dst_node, duration_time, bit_rate, network_type, wavelength_bandwidth, consider_ase_noise, damp, number)
+            count_block += rwa.RWA(A, N, T, src_node, dst_node, duration_time, bit_rate, network_type, wavelength_bandwidth, consider_ase_noise, damp, number, first_fit)
                             
             # update all channels that are still in use
             for link in links:
                 i, j = link
-                for s in range(self.n_slots):
+                for s in range(self.n_slots): #self.n_slots
                     # dijkstra + first-fit
                     if T[i][j][s] > interarrival_time:
                         T[i][j][s] -= interarrival_time
@@ -59,6 +61,7 @@ class Simulation_NetworkLoad:
 
     def FixedBlockages(self, load, n_blockages, n_nodes, links, A, N, T, network_type, wavelength_bandwidth, consider_ase_noise, damp):
         call = Call(n_nodes, load, 1)
+        first_fit = FirstFit(self.n_slots)
         rwa = RWA()
         n_calls = 0
         count_block = 0
@@ -72,12 +75,12 @@ class Simulation_NetworkLoad:
             interarrival_time = call.InterarrivalTime()
             duration_time = call.DurationTime()
 
-            count_block += rwa.RWA(A, N, T, src_node, dst_node, duration_time, bit_rate, network_type, wavelength_bandwidth, consider_ase_noise, damp, number)
+            count_block += rwa.RWA(A, N, T, src_node, dst_node, duration_time, bit_rate, network_type, wavelength_bandwidth, consider_ase_noise, damp, number, first_fit)
                             
             # update all channels that are still in use
             for link in links:
                 i, j = link
-                for s in range(self.n_slots):
+                for s in range(self.n_slots): #self.n_slots
                     # dijkstra + first-fit
                     if T[i][j][s] > interarrival_time:
                         T[i][j][s] -= interarrival_time
@@ -92,6 +95,7 @@ class Simulation_NetworkLoad:
         return load, blocked
 
     def LoadVariation(self, percentage, load, n_calls, n_nodes, links, A, N, T, network_type, wavelength_bandwidth, consider_ase_noise, damp):
+        first_fit = FirstFit(self.n_slots)
         rwa = RWA()
         count_block = 0
         new_load = []
@@ -109,12 +113,12 @@ class Simulation_NetworkLoad:
             interarrival_time = call.InterarrivalTime()
             duration_time = call.DurationTime()
 
-            count_block += rwa.RWA(A, N, T, src_node, dst_node, duration_time, bit_rate, network_type, wavelength_bandwidth, consider_ase_noise, damp, number)
+            count_block += rwa.RWA(A, N, T, src_node, dst_node, duration_time, bit_rate, network_type, wavelength_bandwidth, consider_ase_noise, damp, number, first_fit)
                             
             # update all channels that are still in use
             for link in links:
                 i, j = link
-                for s in range(self.n_slots):
+                for s in range(self.n_slots): #self.n_slots
                     # dijkstra + first-fit
                     if T[i][j][s] > interarrival_time:
                         T[i][j][s] -= interarrival_time
@@ -128,6 +132,7 @@ class Simulation_NetworkLoad:
 
     def BERVariation(self, load, n_calls, n_nodes, links, A, N, T, network_type, wavelength_bandwidth, consider_ase_noise, damp):
         call = Call(n_nodes, load, 1)
+        first_fit = FirstFit(self.n_slots)
         rwa = RWA()
         n_calls01 = 0
         n_calls02 = 0
@@ -149,7 +154,7 @@ class Simulation_NetworkLoad:
             interarrival_time = call.InterarrivalTime()
             duration_time = call.DurationTime()
 
-            count_block += rwa.RWA(A, N, T, src_node, dst_node, duration_time, bit_rate, network_type, wavelength_bandwidth, consider_ase_noise, damp, number)
+            count_block += rwa.RWA(A, N, T, src_node, dst_node, duration_time, bit_rate, network_type, wavelength_bandwidth, consider_ase_noise, damp, number, first_fit)
             count[gen] = count_block
             
             if number > 0 and number <= 25:
@@ -172,7 +177,7 @@ class Simulation_NetworkLoad:
             # update all channels that are still in use
             for link in links:
                 i, j = link
-                for s in range(self.n_slots):
+                for s in range(self.n_slots): #self.n_slots
                     # dijkstra + first-fit
                     if T[i][j][s] > interarrival_time:
                         T[i][j][s] -= interarrival_time

@@ -19,8 +19,8 @@ class Signal:
     def __init__(self, input_power = 0.001, input_OSNR = 1000):
 
         """
-        :param input_power: input power of the network transmitters, in Watts.
-        :param input_OSNR: input OSNR of the network.  
+	:param input_power: input power of the network transmitters, in Watts.
+	:param input_OSNR: input OSNR of the network.  
         """
 
         self.input_power = input_power
@@ -38,19 +38,15 @@ class Signal:
         summation = sum(noise)
         return summation
    
-
-
     def ModulationFormat(self, modulation_format):    
         return modulation_format    
     
-    def InputPower(self):    #POTÊNCIA INSERIDA (EM WATTS)
+    def InputPower(self):    
         return self.input_power
 
-    def InputNoisePower(self):    #RUÍDO DA POTÊNCIA -> DEF: 1000x MAIOR QUE A POTÊNCIA 
+    def InputNoisePower(self):    
         input_noise_power = self.input_power/self.input_OSNR 
         return input_noise_power
-
-
 
     def OutputNoisePower(self, A, route, damp):    
         output_noise_power = self.InputNoisePower() + self.Summation(A, route, damp)
