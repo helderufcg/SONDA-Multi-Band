@@ -1,5 +1,5 @@
 from CallGenerator import Call
-from RoutingWavelengthAssignment import n_slots, RWA
+from RoutingWavelengthAssignment import RWA
 import random
 from prettytable import PrettyTable
 import pandas as pd
@@ -15,7 +15,8 @@ or slot blocking probability.
 
 class Simulation_NetworkLoad:
 
-    def __init__(self):
+    def __init__(self,n_slots):
+        self.n_slots = n_slots
         pass
 
     def NewLoad(self, percentage, load):
@@ -44,7 +45,7 @@ class Simulation_NetworkLoad:
             # update all channels that are still in use
             for link in links:
                 i, j = link
-                for s in range(n_slots):
+                for s in range(self.n_slots):
                     # dijkstra + first-fit
                     if T[i][j][s] > interarrival_time:
                         T[i][j][s] -= interarrival_time
@@ -76,7 +77,7 @@ class Simulation_NetworkLoad:
             # update all channels that are still in use
             for link in links:
                 i, j = link
-                for s in range(n_slots):
+                for s in range(self.n_slots):
                     # dijkstra + first-fit
                     if T[i][j][s] > interarrival_time:
                         T[i][j][s] -= interarrival_time
@@ -113,7 +114,7 @@ class Simulation_NetworkLoad:
             # update all channels that are still in use
             for link in links:
                 i, j = link
-                for s in range(n_slots):
+                for s in range(self.n_slots):
                     # dijkstra + first-fit
                     if T[i][j][s] > interarrival_time:
                         T[i][j][s] -= interarrival_time
@@ -171,7 +172,7 @@ class Simulation_NetworkLoad:
             # update all channels that are still in use
             for link in links:
                 i, j = link
-                for s in range(n_slots):
+                for s in range(self.n_slots):
                     # dijkstra + first-fit
                     if T[i][j][s] > interarrival_time:
                         T[i][j][s] -= interarrival_time

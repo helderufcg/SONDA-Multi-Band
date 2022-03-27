@@ -6,7 +6,6 @@ from Modulation import Modulation
 import math
 
 dijkstra = Dijkstra()
-first_fit = FirstFit()
 signal = Signal()
 modulation = Modulation()
 
@@ -18,24 +17,25 @@ implementation.
 
 class RWA:
 
-    def __init__(self):  
+    def __init__(self, n_slots):
+        self.n_slots = n_slots
         pass
    
     def Generate(self, n_nodes, links):             
         # init slots availability matrix    
-        dimension = (n_nodes, n_nodes, n_slots)
+        dimension = (n_nodes, n_nodes, self.n_slots)
         slot = np.zeros(shape=dimension, dtype=np.uint8)
         for link in links:
-            for s in range(n_slots):
+            for s in range(self.n_slots):
                 slot_availability = 1
                 slot[link[0]][link[1]][s] = slot_availability
                 slot[link[1]][link[0]][s] = slot_availability
 
         # init traffic matrix
-        dimension = (n_nodes, n_nodes, n_slots)
+        dimension = (n_nodes, n_nodes, self.n_slots)
         time = np.zeros(shape=dimension, dtype=np.float64)
         for link in links:
-            for s in range(n_slots):
+            for s in range(self.n_slots):
                 time[link[0]][link[1]][s] = 0
                 time[link[1]][link[0]][s] = 0
 
@@ -43,6 +43,8 @@ class RWA:
 
     def RWA(self, A, N, T, src_node, dst_node, holding_time, bit_rate, network_type, wavelength_bandwidth, consider_ase_noise, damp, number):
         # defining the best route according to the dijkstra algorithm 
+        first_fit = FirstFit(self.n_slots) #att
+
         route = dijkstra.Dijkstra(A, src_node, dst_node)
 
         M = modulation.M

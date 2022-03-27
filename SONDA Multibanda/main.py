@@ -61,32 +61,31 @@ def main():
         # --------------- Band selection ------------------
         cont = 1
         all_slots = 0
-        band_sel = BandSelection()
+        band_selection = Band_Selection() #Objeto band_selection
 
-        if fiber == 1:
+        if fiber == 1: #Necessário realizar o tratamento de erro que impeça o usuário de selecionar duas vezes a mesma banda;
                 while(cont!=0):
                         print('\n1 - O-Band \n2 - E-Band \n3 - S-Band \n4 - C-Band \n5 - L-Band \n6 - Close')
                         band = int(input('\n>>> Select the bands (One at a time): '))
 
                         if band == 1:
-                                all_slots = all_slots + len(band_sel.getSlots_O_G652())
+                                all_slots = all_slots + len(band_selection.getSlots_O_G652())
                         elif band ==2:
-                                all_slots = all_slots + len(band_sel.getSlots_E_G652())
+                                all_slots = all_slots + len(band_selection.getSlots_E_G652())
                         elif band ==3:
-                                all_slots = all_slots + len(band_sel.getSlots_S_G652())
+                                all_slots = all_slots + len(band_selection.getSlots_S_G652())
                         elif band ==4:
-                                all_slots = all_slots + len(band_sel.getSlots_C_G652())
+                                all_slots = all_slots + len(band_selection.getSlots_C_G652())
                         elif band ==5:
-                                all_slots = all_slots + len(band_sel.getSlots_L_G652())
+                                all_slots = all_slots + len(band_selection.getSlots_L_G652())
                         elif band == 6:
                                 cont = 0
                         else:
                                 raise ValueError('Invalid band.')
-
+        
+        
         else:
                 pass
-        
-        band_sel.setAll_slots(all_slots) #Passa o número de slots definido pela escolha das bandas
 
         # --------------- Network Types ------------------
         print('\n1 - WDM  \n2 - EON')    
@@ -114,13 +113,15 @@ def main():
         else:
                 raise ValueError('Invalid network type.')
 
+        all_slots = 32
+
         # --------------- Parameters and Simulation  ------------------
-        rwa = RWA()
+        rwa = RWA(all_slots) #Objeto rwa
         slots, times = rwa.Generate(n_nodes, links)
         N = slots.copy()
-        T = times.copy()   
-        simulation = Simulation_NetworkLoad()
-        grafics = Grafics()
+        T = times.copy()
+        simulation = Simulation_NetworkLoad(all_slots) #Objeto simulation
+        grafics = Grafics() #Objeto grafics
         load_bp = []
         pool = mp.Pool(mp.cpu_count())               
 

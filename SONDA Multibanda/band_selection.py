@@ -1,4 +1,5 @@
 from PhysicalConstants import *
+
 import math
 import numpy as np
 
@@ -9,8 +10,7 @@ def w(f0):
 op = np.vectorize(w)
 
 
-
-class BandSelection:
+class Band_Selection:
     def __init__(self):
         pass
     
@@ -65,8 +65,4 @@ class BandSelection:
         return atenuaO
 
     #Fibra Convencional
-
     
-    #Set all_slots
-    def setAll_slots(self,slots):
-        all_slots = slots

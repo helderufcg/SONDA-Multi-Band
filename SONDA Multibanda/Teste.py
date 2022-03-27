@@ -1,7 +1,7 @@
 from Band_Selection import *
 from PhysicalConstants import *
 
-Banda = BandSelection()
+Banda = Band_Selection()
 
 print(Banda.getSlots_O_G652(),"\n")
 print(Banda.getSlots_E_G652(),"\n")
