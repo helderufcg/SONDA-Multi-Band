@@ -42,7 +42,7 @@ class RWA:
 
         return slot, time
 
-    def RWA(self, A, N, T, src_node, dst_node, holding_time, bit_rate, network_type, wavelength_bandwidth, consider_ase_noise, damp, number, first_fit):
+    def RWA(self, A, N, T, src_node, dst_node, holding_time, bit_rate, network_type, wavelength_bandwidth, consider_ase_noise, damp, number, first_fit, freq, fiber_type):
         # defining the best route according to the dijkstra algorithm 
         #first_fit = FirstFit(self.n_slots) #att
 
@@ -65,7 +65,7 @@ class RWA:
                 required_slots = modulation.RequiredSlots(bit_rate, BSlot, M[0])
             else:                
                 for i in range(9):
-                    if signal.OutputOSNR(A, route, damp) > modulation.ThresholdOSNR(bit_rate, SNRb[i]):
+                    if signal.OutputOSNR(A, route, damp, freq, fiber_type) > modulation.ThresholdOSNR(bit_rate, SNRb[i]):
                         required_slots = modulation.RequiredSlots(bit_rate, BSlot, M[i])
                         color = 0
                         break

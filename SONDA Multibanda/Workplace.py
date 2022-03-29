@@ -9,13 +9,21 @@ from UnitConversion import *
 import numpy as np
 import matplotlib.pyplot as plt
 
+Banda = Band_Selection()
+print(Band_Selection.getSlotsAttenuation(1,2,193.4E12))
+
+
+
+
+
+'''
 NFo = db_to_abs(NFO)
 NFe = db_to_abs(NFE)
 NFs = db_to_abs(NFS)
 NFc = db_to_abs(NFC)
 NFl = db_to_abs(NFL)
 
-Banda = Band_Selection()
+
 
 def WavelenghtConv(freq):
     
@@ -60,5 +68,5 @@ plt.ylabel("P[Ase] (dBm)")
 plt.legend([])
 plt.grid()
 plt.show()
-''''''
+'''
 

@@ -1,3 +1,5 @@
+from BandConstants import *
+from Band_Selection import Band_Selection
 from SSS import SSS
 from Fiber import Fiber
 from BoosterAmplifier import BoosterAmplifier
@@ -5,10 +7,10 @@ from InLineAmplifier import InLineAmplifier
 from PreAmplifier import PreAmplifier
 
 sss = SSS()
-fiber = Fiber()
 booster_amplifier = BoosterAmplifier()
 inline_amplifier = InLineAmplifier()
 pre_amplifier = PreAmplifier()
+Band = Band_Selection()
 
 """
 The Signal class represents a signal that propagates through the network.
@@ -26,14 +28,17 @@ class Signal:
         self.input_power = input_power
         self.input_OSNR = input_OSNR    
 
-    def Summation(self, A, route, damp):
+    def Summation(self, A, route, damp, fiber, freq):
         noise = []
+        noise_figure = Band.getNoiseFigureAmplifier(freq)
         for i in range(len(route)-1):
             dij = A[route[i]][route[i+1]]
             namp = inline_amplifier.NumberOfInlineAmplifiers(dij, damp)
-            nb = booster_amplifier.Noise(sss.SSSLoss())
-            ni = inline_amplifier.Noise(fiber.FiberLoss(dij), dij, damp)
-            np = pre_amplifier.Noise(fiber.FiberLoss(dij), namp, sss.SSSLoss())            
+            
+            nb = booster_amplifier.Noise(sss.SSSLoss(), freq, noise_figure)
+            ni = inline_amplifier.Noise(fiber.FiberLoss(dij), dij, damp, freq, noise_figure)
+            np = pre_amplifier.Noise(fiber.FiberLoss(dij), namp, sss.SSSLoss(), freq, noise_figure)
+                        
             noise.append(nb + (ni * (fiber.FiberLoss(dij)**(1/(1+namp)))) + (np/sss.SSSLoss()))
         summation = sum(noise)
         return summation
@@ -48,10 +53,11 @@ class Signal:
         input_noise_power = self.input_power/self.input_OSNR 
         return input_noise_power
 
-    def OutputNoisePower(self, A, route, damp):    
-        output_noise_power = self.InputNoisePower() + self.Summation(A, route, damp)
+    def OutputNoisePower(self, A, route, damp, fiber, freq):    
+        output_noise_power = self.InputNoisePower() + self.Summation(A, route, damp, fiber, freq)
         return output_noise_power
 
-    def OutputOSNR(self, A, route, damp):          
-        output_OSNR = self.input_power/self.OutputNoisePower(A, route, damp)
+    def OutputOSNR(self, A, route, damp, freq, fiber_type):
+        fiber = Fiber(freq, fiber_type) #Fiber passa a ser instanciado aqui, e é passado como parâmetro aos demais métodos            
+        output_OSNR = self.input_power/self.OutputNoisePower(A, route, damp, fiber, freq)
         return output_OSNR

@@ -1,5 +1,6 @@
 import os
 from Fiber import Fiber
+from PhysicalConstants import FcentralC
 from Topology import *
 from Band_Selection import *
 from RoutingWavelengthAssignment import RWA
@@ -70,19 +71,19 @@ def main():
         # --------------- Fiber selection ------------------
         '''
         print('\n1 - ITU-T G652-D \n2 - ITU-T G652-A ')       
-        fiber = int(input('\n>>> Select fiber type: '))
+        fiber_type = int(input('\n>>> Select fiber type: '))
         '''
 
         # --------------- Band selection ------------------
         #Escolha automática do tipo da fibra
         
-        fiber = 1
+        fiber_type = 1
         cont = 1
         all_slots = 32
         band_selection = Band_Selection() #Objeto band_selection
         control= [0, 0, 0, 0, 0]
         '''
-        if fiber == 1 or fiber == 2: #Necessário realizar o tratamento de erro que impeça o usuário de selecionar duas vezes a mesma banda;
+        if fiber_type == 1 or fiber_type == 2: #Necessário realizar o tratamento de erro que impeça o usuário de selecionar duas vezes a mesma banda;
                 while(cont!=0):
                         print('All Slots:', all_slots)
                         print('\n| Banda O:',control[0],' | Banda E:',control[1],' | Banda S:',control[2],' | Banda C:',control[3],' | Banda L:',control[4])
@@ -92,31 +93,31 @@ def main():
 
                         if band == 1:
                                 if control[0] == 0:
-                                        all_slots = all_slots + len(band_selection.getSlotsAttenuation_O(fiber))
+                                        all_slots = all_slots + len(band_selection.getSlotsAttenuation_O(fiber_type))
                                         control[0] = 1
                                 else:
                                         raise ValueError('The band has already been selected.')
                         elif band ==2:
                                 if control[1] == 0:
-                                        all_slots = all_slots + len(band_selection.getSlotsAttenuation_E(fiber))
+                                        all_slots = all_slots + len(band_selection.getSlotsAttenuation_E(fiber_type))
                                         control[1] = 1
                                 else:
                                         raise ValueError('The band has already been selected.')
                         elif band ==3:
                                 if control[2] == 0:
-                                        all_slots = all_slots + len(band_selection.getSlotsAttenuation_S(fiber))
+                                        all_slots = all_slots + len(band_selection.getSlotsAttenuation_S(fiber_type))
                                         control[2] = 1
                                 else:
                                         raise ValueError('The band has already been selected.')        
                         elif band ==4:
                                 if control[3] == 0:
-                                        all_slots = all_slots + len(band_selection.getSlotsAttenuation_C(fiber))
+                                        all_slots = all_slots + len(band_selection.getSlotsAttenuation_C(fiber_type))
                                         control[3] = 1
                                 else:
                                         raise ValueError('The band has already been selected.')        
                         elif band ==5:
                                 if control[4] == 0:
-                                        all_slots = all_slots + len(band_selection.getSlotsAttenuation_L(fiber))
+                                        all_slots = all_slots + len(band_selection.getSlotsAttenuation_L(fiber_type))
                                         control[4] = 1
                                 else:
                                         raise ValueError('The band has already been selected.')        
@@ -169,15 +170,15 @@ def main():
         if damp < 0:
                 raise ValueError('The distance between inline amplifiers must be positive.')
         '''
-        damp = 60 #Distância entre os amplificadores de linha de 60Km
-
+        damp = 60 #Distância entre os amplificadores de linha de 60Km    
+        
         # --------------- Parameters and Simulation  ------------------
         first_fit = FirstFit(all_slots)
         rwa = RWA()
         slots, times = rwa.Generate(n_nodes, links, first_fit)
         N = slots.copy()
         T = times.copy()
-        simulation = Simulation_NetworkLoad(all_slots)
+        simulation = Simulation_NetworkLoad(all_slots, FreqC, fiber_type)
         grafics = Grafics() #Objeto grafics
         load_bp = [] #Lista das probabilidades de bloqueio*
         pool = mp.Pool(mp.cpu_count())               

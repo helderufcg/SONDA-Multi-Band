@@ -1,7 +1,7 @@
 import numpy as np
 
-c = 299792458 #speed of light (m/s)
-BSlot = 12.5E9 
+c = 299792458  #Speed of light (m/s)
+BSlot = 12.5E9 #Slot Reference bandwidth (Hz)
 
 #Starting wavelength (nm)
 LenO = 1260E-9
@@ -27,11 +27,11 @@ BandC = 4.382E12
 BandL = 7.073E12
 
 #Noise Figure
-NFO = 6.08  #dB PDFA
-NFE = 8     #dB SOA
-NFS = 5.48  #dB TDFA
-NFC = 5.48  #dB EDFA
-NFL = 6.08  #dB EDFA
+NFO = 7     #dB PDFA
+NFE = 6     #dB BDFA
+NFS = 7     #dB TDFA
+NFC = 5.5   #dB EDFA
+NFL = 6     #dB EDFA
 
 #FSUs array of each band
 F  = np.arange(FreqO,FreqU,-BSlot)
@@ -40,3 +40,5 @@ FE = np.arange(FreqE,FreqS,-BSlot)
 FS = np.arange(FreqS,FreqC,-BSlot)
 FC = np.arange(FreqC,FreqL,-BSlot)
 FL = np.arange(FreqL,FreqU,-BSlot)
+
+print(len(FL))

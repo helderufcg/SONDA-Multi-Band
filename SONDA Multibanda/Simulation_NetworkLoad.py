@@ -16,8 +16,10 @@ or slot blocking probability.
 
 class Simulation_NetworkLoad:
 
-    def __init__(self,n_slots): #
+    def __init__(self, n_slots, freq, fiber_type): #frequência de simulação
         self.n_slots = n_slots
+        self.freq = freq
+        self.fiber_type = fiber_type
         pass
 
     def NewLoad(self, percentage, load):
@@ -42,7 +44,7 @@ class Simulation_NetworkLoad:
             interarrival_time = call.InterarrivalTime()
             duration_time = call.DurationTime()
 
-            count_block += rwa.RWA(A, N, T, src_node, dst_node, duration_time, bit_rate, network_type, wavelength_bandwidth, consider_ase_noise, damp, number, first_fit)
+            count_block += rwa.RWA(A, N, T, src_node, dst_node, duration_time, bit_rate, network_type, wavelength_bandwidth, consider_ase_noise, damp, number, first_fit, self.freq, self.fiber_type)
                             
             # update all channels that are still in use
             for link in links:
@@ -75,7 +77,7 @@ class Simulation_NetworkLoad:
             interarrival_time = call.InterarrivalTime()
             duration_time = call.DurationTime()
 
-            count_block += rwa.RWA(A, N, T, src_node, dst_node, duration_time, bit_rate, network_type, wavelength_bandwidth, consider_ase_noise, damp, number, first_fit)
+            count_block += rwa.RWA(A, N, T, src_node, dst_node, duration_time, bit_rate, network_type, wavelength_bandwidth, consider_ase_noise, damp, number, first_fit, self.freq, self.fiber_type)
                             
             # update all channels that are still in use
             for link in links:
@@ -113,7 +115,7 @@ class Simulation_NetworkLoad:
             interarrival_time = call.InterarrivalTime()
             duration_time = call.DurationTime()
 
-            count_block += rwa.RWA(A, N, T, src_node, dst_node, duration_time, bit_rate, network_type, wavelength_bandwidth, consider_ase_noise, damp, number, first_fit)
+            count_block += rwa.RWA(A, N, T, src_node, dst_node, duration_time, bit_rate, network_type, wavelength_bandwidth, consider_ase_noise, damp, number, first_fit, self.freq, self.fiber_type)
                             
             # update all channels that are still in use
             for link in links:
@@ -154,7 +156,7 @@ class Simulation_NetworkLoad:
             interarrival_time = call.InterarrivalTime()
             duration_time = call.DurationTime()
 
-            count_block += rwa.RWA(A, N, T, src_node, dst_node, duration_time, bit_rate, network_type, wavelength_bandwidth, consider_ase_noise, damp, number, first_fit)
+            count_block += rwa.RWA(A, N, T, src_node, dst_node, duration_time, bit_rate, network_type, wavelength_bandwidth, consider_ase_noise, damp, number, first_fit, self.freq, self.fiber_type)
             count[gen] = count_block
             
             if number > 0 and number <= 25:

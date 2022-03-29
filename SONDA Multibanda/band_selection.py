@@ -11,6 +11,22 @@ class Band_Selection:
     def __init__(self):
         pass
     
+    def getNoiseFigureAmplifier(self, Freq):
+        if   Freq > FreqU and Freq <= FreqL:
+            noise_figure = NFL
+        elif Freq > FreqL and Freq <= FreqC:
+            noise_figure = NFC
+        elif Freq > FreqC and Freq <= FreqS:
+            noise_figure = NFS
+        elif Freq > FreqS and Freq <= FreqE:
+            noise_figure = NFE
+        elif Freq > FreqE and Freq <= FreqO:
+            noise_figure = NFO
+        else:
+            noise_figure = 5
+        
+        return noise_figure
+    
     def getSlotsAttenuation(self,fiber,Freq):
         if fiber == 1:
             A = Ag652D(Freq)
