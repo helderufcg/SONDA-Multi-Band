@@ -40,5 +40,3 @@ FE = np.arange(FreqE,FreqS,-BSlot)
 FS = np.arange(FreqS,FreqC,-BSlot)
 FC = np.arange(FreqC,FreqL,-BSlot)
 FL = np.arange(FreqL,FreqU,-BSlot)
-
-print(len(FL))

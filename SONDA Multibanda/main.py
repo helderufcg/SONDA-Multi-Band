@@ -240,7 +240,6 @@ def main():
 
                 grafics.plot_blocking_probability(load_bp)
 
-
         #----------------------------Testar depois-------------------------------------
         elif simualtion_type == 2:      
                 n_blockages = int(input('\n>>> Enter the number of blocked calls: '))        
@@ -276,7 +275,6 @@ def main():
                 pool.join()            
                 t2 = time.time()   
                 grafics.plot_BER_variation(sorted(load_bp), n_calls)
-
 
 
 
