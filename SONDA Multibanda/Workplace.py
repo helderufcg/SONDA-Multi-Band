@@ -10,11 +10,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 Banda = Band_Selection()
-print(Band_Selection.getSlotsAttenuation(1,2,193.4E12))
-
-
-
-
+print(Band_Selection.getSlotsAttenuation(1,2,FcentralC))
 
 '''
 NFo = db_to_abs(NFO)

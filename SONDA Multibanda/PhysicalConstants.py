@@ -17,9 +17,9 @@ FcentralS = 200.53E12 #P/ 1495nm
 FcentralC = 193.41E12 #P/ 1550nm
 FcentralL = 187.96E12 #P/ 1595nm
 
-Fcentral  = 207.83E12  #P/1442.5nm
+Fcentral  = 207.83E12 #P/ 1442.5nm
 
-BRef = 12.5E9 #12.5 Gbps
-BSlot = 12.5E9 #Tamanho espectral do slot
+BRef = 12.5E9 
+BSlot = 12.5E9 
 
 numPolarizations = 2

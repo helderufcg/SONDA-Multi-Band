@@ -18,8 +18,7 @@ implementation.
 
 class RWA:
 
-    def __init__(self):#, n_slots
-        #self.n_slots = n_slots
+    def __init__(self):
         pass
    
     def Generate(self, n_nodes, links, first_fit):             
@@ -27,16 +26,16 @@ class RWA:
         dimension = (n_nodes, n_nodes, first_fit.get_N_slots())#self.n_slots
         slot = np.zeros(shape=dimension, dtype=np.uint8)
         for link in links:
-            for s in range(first_fit.get_N_slots()): #self.n_slots
+            for s in range(first_fit.get_N_slots()):
                 slot_availability = 1
                 slot[link[0]][link[1]][s] = slot_availability
                 slot[link[1]][link[0]][s] = slot_availability
 
         # init traffic matrix
-        dimension = (n_nodes, n_nodes, first_fit.get_N_slots()) #self.n_slots
+        dimension = (n_nodes, n_nodes, first_fit.get_N_slots()) 
         time = np.zeros(shape=dimension, dtype=np.float64)
         for link in links:
-            for s in range(first_fit.get_N_slots()): #self.n_slots
+            for s in range(first_fit.get_N_slots()): 
                 time[link[0]][link[1]][s] = 0
                 time[link[1]][link[0]][s] = 0
 
@@ -44,7 +43,6 @@ class RWA:
 
     def RWA(self, A, N, T, src_node, dst_node, holding_time, bit_rate, network_type, wavelength_bandwidth, consider_ase_noise, damp, number, first_fit, freq, fiber_type):
         # defining the best route according to the dijkstra algorithm 
-        #first_fit = FirstFit(self.n_slots) #att
 
         route = dijkstra.Dijkstra(A, src_node, dst_node)
 
@@ -59,7 +57,7 @@ class RWA:
             SNRb = modulation.SNRb04
             
         if network_type == 1:
-            required_slots = math.ceil((wavelength_bandwidth*10**9)/BSlot) #Bslot = 12.5 GHz
+            required_slots = math.ceil((wavelength_bandwidth*10**9)/BSlot)
         else:            
             if consider_ase_noise == 0:
                 required_slots = modulation.RequiredSlots(bit_rate, BSlot, M[0])

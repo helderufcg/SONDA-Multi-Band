@@ -17,7 +17,7 @@ class Modulation:
         self.SNRb04 = [32.11, 29.57, 27.08, 24.65, 22.29, 20.02, 17.86, 15.83, 13.93]    # signal-noise per bit relation, in dB (BER E-12)
         '''
         self.M = [64, 16, 4]
-        self.SNRb = [14.79, 10.53, 6.75]
+        self.SNRb01 = [14.77, 10.52, 6.79]
         '''
 
     def ThresholdOSNR(self, bit_rate, SNRb): 

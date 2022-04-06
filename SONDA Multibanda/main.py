@@ -24,7 +24,7 @@ def main():
                 raise ValueError('Invalid simualtion type.')
         '''
         #Escolha automática do tipo de simulação
-        simualtion_type = 1
+        simualtion_type = 4
         # --------------- Topologies ------------------
        
 
@@ -62,12 +62,15 @@ def main():
         else:
                 raise ValueError('Invalid network topology.')
         '''
-        #Escolha automática da NSFNet
+        #Escolha automática da topologia
+        '''
         n_nodes = len(adjNSFNet) 
         A = adjNSFNet
         links = linksNSFNet
-
-
+        '''
+        n_nodes = len(adjTop1)
+        A = adjTop1
+        links = linksTop1
         # --------------- Fiber selection ------------------
         '''
         print('\n1 - ITU-T G652-D \n2 - ITU-T G652-A ')       
@@ -80,10 +83,10 @@ def main():
         fiber_type = 1
         cont = 1
         all_slots = 32
-        band_selection = Band_Selection() #Objeto band_selection
+        band_selection = Band_Selection()
         control= [0, 0, 0, 0, 0]
         '''
-        if fiber_type == 1 or fiber_type == 2: #Necessário realizar o tratamento de erro que impeça o usuário de selecionar duas vezes a mesma banda;
+        if fiber_type == 1 or fiber_type == 2:
                 while(cont!=0):
                         print('All Slots:', all_slots)
                         print('\n| Banda O:',control[0],' | Banda E:',control[1],' | Banda S:',control[2],' | Banda C:',control[3],' | Banda L:',control[4])
@@ -162,7 +165,7 @@ def main():
         else:        
                 raise ValueError('The option entered is invalid.')
         '''
-        consider_ase_noise = 1 #ASE desativado
+        consider_ase_noise = 1 #ASE ativado
 
         # --------------- Network Types ------------------
         '''
@@ -178,9 +181,9 @@ def main():
         slots, times = rwa.Generate(n_nodes, links, first_fit)
         N = slots.copy()
         T = times.copy()
-        simulation = Simulation_NetworkLoad(all_slots, FreqC, fiber_type)
-        grafics = Grafics() #Objeto grafics
-        load_bp = [] #Lista das probabilidades de bloqueio*
+        simulation = Simulation_NetworkLoad(all_slots, FcentralC, fiber_type)
+        grafics = Grafics()
+        load_bp = []
         pool = mp.Pool(mp.cpu_count())               
 
         # --------------- Simulation interval  ------------------
@@ -209,15 +212,15 @@ def main():
                 if percentage_step < 0:
                         raise ValueError('Invalid percentage.')
         '''
-        min_traffic_load = 500
-        max_traffic_load = 820
-        traffic_load_step = 20
-
+        min_traffic_load = 70
+        max_traffic_load = 160
+        traffic_load_step = 30
+        
         traffic_load = 5000
         min_percentage = 0.2
         max_percentage = 0.7
         percentage_step = 0.01
-
+        
         # --------------- Simulation interval  ------------------
 
         if simualtion_type == 1:
@@ -229,7 +232,7 @@ def main():
                 print('\nSimulation in progress...\n')
                 '''
 
-                n_calls = 1000 #Número de chamadas
+                n_calls = 10000 #Número de chamadas
 
                 t1 = time.time()
                 for load in range(min_traffic_load, max_traffic_load, traffic_load_step):
@@ -266,7 +269,8 @@ def main():
                 # simulation.SaveResults(sorted(load_bp))
 
         else: 
-                n_calls = int(input('\n>>> Enter the number of calls: '))
+                #n_calls = int(input('\n>>> Enter the number of calls: '))
+                n_calls = 10000 #Número de chamadas
                 print('\nSimulation in progress...\n')                
                 t1 = time.time()
                 for load in range(min_traffic_load, max_traffic_load, traffic_load_step):
