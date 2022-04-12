@@ -13,7 +13,10 @@ import time
 os.system('cls')
 
 def main():
-        
+        '''
+        with open('Modulations.txt','a') as text:
+                text.write('[')
+        '''
         # --------------- Simualtion Types ------------------
         '''
         print('\n1 - Network load variation with fixed number of calls  \n2 - Network load variation with fixed number of blockages \n3 - Percentage variation on the network traffic load \n4 - BER variation')
@@ -24,7 +27,7 @@ def main():
                 raise ValueError('Invalid simualtion type.')
         '''
         #Escolha automática do tipo de simulação
-        simualtion_type = 4
+        simualtion_type = 2
         # --------------- Topologies ------------------
        
 
@@ -63,7 +66,7 @@ def main():
                 raise ValueError('Invalid network topology.')
         '''
         #Escolha automática da topologia
-        '''
+        
         n_nodes = len(adjNSFNet) 
         A = adjNSFNet
         links = linksNSFNet
@@ -71,6 +74,7 @@ def main():
         n_nodes = len(adjTop1)
         A = adjTop1
         links = linksTop1
+        '''
         # --------------- Fiber selection ------------------
         '''
         print('\n1 - ITU-T G652-D \n2 - ITU-T G652-A ')       
@@ -82,10 +86,11 @@ def main():
         
         fiber_type = 1
         cont = 1
-        all_slots = 32
+        all_slots = 64
         band_selection = Band_Selection()
         control= [0, 0, 0, 0, 0]
         '''
+        
         if fiber_type == 1 or fiber_type == 2:
                 while(cont!=0):
                         print('All Slots:', all_slots)
@@ -173,7 +178,7 @@ def main():
         if damp < 0:
                 raise ValueError('The distance between inline amplifiers must be positive.')
         '''
-        damp = 60 #Distância entre os amplificadores de linha de 60Km    
+        damp = 70 #Distância entre os amplificadores de linha de 60Km    
         
         # --------------- Parameters and Simulation  ------------------
         first_fit = FirstFit(all_slots)
@@ -181,7 +186,7 @@ def main():
         slots, times = rwa.Generate(n_nodes, links, first_fit)
         N = slots.copy()
         T = times.copy()
-        simulation = Simulation_NetworkLoad(all_slots, FcentralC, fiber_type)
+        simulation = Simulation_NetworkLoad(all_slots, 193.4E12, fiber_type)
         grafics = Grafics()
         load_bp = []
         pool = mp.Pool(mp.cpu_count())               
@@ -213,14 +218,14 @@ def main():
                         raise ValueError('Invalid percentage.')
         '''
         min_traffic_load = 70
-        max_traffic_load = 160
-        traffic_load_step = 30
-        
+        max_traffic_load = 300
+        traffic_load_step = 20
+        """
         traffic_load = 5000
         min_percentage = 0.2
         max_percentage = 0.7
         percentage_step = 0.01
-        
+        """
         # --------------- Simulation interval  ------------------
 
         if simualtion_type == 1:
@@ -232,7 +237,7 @@ def main():
                 print('\nSimulation in progress...\n')
                 '''
 
-                n_calls = 10000 #Número de chamadas
+                n_calls = 100000 #Número de chamadas
 
                 t1 = time.time()
                 for load in range(min_traffic_load, max_traffic_load, traffic_load_step):
@@ -240,14 +245,18 @@ def main():
                 pool.close()
                 pool.join()
                 t2 = time.time()
-
+                grafics.plot_topology(A)
                 grafics.plot_blocking_probability(load_bp)
+                
 
         #----------------------------Testar depois-------------------------------------
-        elif simualtion_type == 2:      
+        elif simualtion_type == 2:
+                '''
                 n_blockages = int(input('\n>>> Enter the number of blocked calls: '))        
                 if n_blockages < 0:
                         raise ValueError('Invalid number of blockages.')
+                '''
+                n_blockages = 1000
                 print('\nSimulation in progress...\n')
                 t1 = time.time()
                 for load in range(min_traffic_load, max_traffic_load, traffic_load_step):
@@ -286,6 +295,9 @@ def main():
 
         simulation.ShowResults(sorted(load_bp), simualtion_type)
         print('\nTime taken =', t2-t1, 'seconds')
-
+        '''
+        with open('Modulations.txt','a') as text:
+                text.write(']\n')
+        '''        
 if __name__ == '__main__':
     main()

@@ -23,7 +23,7 @@ class RWA:
    
     def Generate(self, n_nodes, links, first_fit):             
         # init slots availability matrix    
-        dimension = (n_nodes, n_nodes, first_fit.get_N_slots())#self.n_slots
+        dimension = (n_nodes, n_nodes, first_fit.get_N_slots())
         slot = np.zeros(shape=dimension, dtype=np.uint8)
         for link in links:
             for s in range(first_fit.get_N_slots()):
@@ -62,15 +62,16 @@ class RWA:
             if consider_ase_noise == 0:
                 required_slots = modulation.RequiredSlots(bit_rate, BSlot, M[0])
             else:                
-                for i in range(9):
+                for i in range(3):
                     if signal.OutputOSNR(A, route, damp, freq, fiber_type) > modulation.ThresholdOSNR(bit_rate, SNRb[i]):
                         required_slots = modulation.RequiredSlots(bit_rate, BSlot, M[i])
+                        #module = M[i]
                         color = 0
                         break
                     else:
                         color = 1      
                 if color:        
-                    return 1              
+                    return 1 #blocked              
         
         # defining the slots to be alocated First_fit.get_N_slots()
         slots_vector = first_fit.FirstFit(N, T, route, required_slots)        
@@ -87,7 +88,10 @@ class RWA:
                 for i in range(required_slots):
                     N[rcurr][rnext][slots_vector[i]] = 0
                     T[rcurr][rnext][slots_vector[i]] = holding_time
-
+            '''        
+            with open('Modulations.txt','a') as text:
+                text.write(str(module) + ',\n')
+            '''    
             return 0  # allocated
         else:
             return 1  # blocked

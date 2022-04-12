@@ -30,7 +30,8 @@ class Signal:
 
     def Summation(self, A, route, damp, fiber, freq):
         noise = []
-        noise_figure = Band.getNoiseFigureAmplifier(freq)
+        #noise_figure = Band.getNoiseFigureAmplifier(freq)
+        noise_figure = 5
         for i in range(len(route)-1):
             dij = A[route[i]][route[i+1]]
             namp = inline_amplifier.NumberOfInlineAmplifiers(dij, damp)

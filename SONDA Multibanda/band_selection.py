@@ -1,11 +1,13 @@
 from BandConstants import *
-from BandData import amostra_aten, amostra_freq, amostra_freq_dry, amostra_aten_dry
+from BandData import *
 import math
 import numpy as np
 from scipy.interpolate import interp1d
 
 Ag652A = interp1d(amostra_freq, amostra_aten, kind='cubic') #Attenuation OH peak fiber
 Ag652D = interp1d(amostra_freq_dry, amostra_aten_dry, kind='cubic') #Attenuation dry fiber
+
+NF_C = interp1d(amostra_freq_c,amostra_nf_c,"cubic")
 
 class Band_Selection:
     def __init__(self):
@@ -15,7 +17,7 @@ class Band_Selection:
         if   Freq > FreqU and Freq <= FreqL:
             noise_figure = NFL
         elif Freq > FreqL and Freq <= FreqC:
-            noise_figure = NFC
+            noise_figure = NF_C(Freq)
         elif Freq > FreqC and Freq <= FreqS:
             noise_figure = NFS
         elif Freq > FreqS and Freq <= FreqE:
