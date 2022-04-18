@@ -1,4 +1,4 @@
-from PhysicalConstants import BSlot
+from PhysicalConstants import BSlot, Fcentral, FcentralC
 from Dijkstra_RoutingAlgorithm import Dijkstra
 from FirstFit_ResourceAlgorithm import *
 from Signal import Signal 
@@ -57,15 +57,15 @@ class RWA:
             SNRb = modulation.SNRb04
         
         #usado para encontrar a frequência do slot
-        ''''''
+        
         a = []
         slots = first_fit.FirstFit(N, T, route, 1)
         if slots == a:
-            frequency = FreqC
+            frequency = FcentralC
         else:
-            frequency = FreqC - BSlot*slots[0]
+            frequency = FcentralC - BSlot*slots[0]
         
-        #frequency = FreqC
+        #frequency = FcentralC
         
         if network_type == 1:
             required_slots = math.ceil((wavelength_bandwidth*10**9)/BSlot)
