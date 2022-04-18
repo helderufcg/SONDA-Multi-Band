@@ -23,12 +23,12 @@ class Call:
         self.H = H
         self.mu = mu
      
-    def Src(self):
+    def Src(self): # nó inicial
         nodes = range(0, self.n_nodes, 1)        
         self.src_node = nodes[random.randint(0, (len(nodes)-1))]            # Randomly assign src node from list
         return self.src_node
 
-    def Dst(self):
+    def Dst(self): # nó final
         nodes = range(0, self.n_nodes, 1)  
         self.dst_node = nodes[random.randint(0, (len(nodes)-1))]
         while(self.dst_node == self.src_node):                              # Ensure dst node is not equal to source

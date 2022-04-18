@@ -1,5 +1,7 @@
 import numpy as np
 
+from BandConstants import BSlot, FreqC
+
 #global n_slots
 #n_slots = 32
 
@@ -31,31 +33,31 @@ class FirstFit:
             return 1
 
     def FirstFit(self, N, T, route, required_slots):
-        aux = [1]*self.n_slots
+        aux = [1]*self.n_slots # criar uma lista auxiliar com 1 em todas as posições e número de posições igual a n_slots
         dimension = (len(route)-1, self.n_slots)
-        FFlists = np.zeros(shape=dimension, dtype=np.uint8)
+        FFlists = np.zeros(shape=dimension, dtype=np.uint8) #cria uma matriz com (nºrotas-1)x(nºslots) e todos os elementos são zero inteiro 8 bits positivos
     
         # checking which slots are available on each link of the route
         for r in range(len(route)-1): 
-            rcurr = route[r]
-            rnext = route[r+1]
+            rcurr = route[r] #r currenct
+            rnext = route[r+1] 
             for s in range(self.n_slots):
                 FFlists[r][s] = N[rcurr][rnext][s]    
         
         # checking which slots are available on all links of the route
         for r in range(len(route)-1):
             result = np.logical_and(aux, FFlists[r])           
-            aux = result
+            aux = result #array com o status de cada slot
             
         slots_vector = []    
         # applying first-fit to the resulting list
-        for s in range(self.n_slots-required_slots+1):
-            for slot in range(s, s+required_slots, 1):
-                if result[slot]: 
-                    slots_vector.append(slot)               
+        for s in range(self.n_slots-required_slots+1): 
+            for slot in range(s, s+required_slots, 1): #!!! variando dentro dos slots requisitados
+                if result[slot]: #se for 0, significa que não há disponibilidade
+                    slots_vector.append(slot)
             if self.VerifyContiguity(slots_vector) and np.size(slots_vector) == required_slots:            
-                break           
+                break
             else:
-                slots_vector.clear()           
+                slots_vector.clear()
 
         return slots_vector

@@ -1,5 +1,5 @@
 from CallGenerator import Call
-from RoutingWavelengthAssignment import RWA #, n_slots
+from RoutingWavelengthAssignment import RWA
 from FirstFit_ResourceAlgorithm import *
 import random
 from prettytable import PrettyTable
@@ -30,7 +30,7 @@ class Simulation_NetworkLoad:
         return new_load
 
     def FixedCalls(self, load, n_calls, n_nodes, links, A, N, T, network_type, wavelength_bandwidth, consider_ase_noise, damp):
-        call = Call(n_nodes, load, 1)
+        call = Call(n_nodes, load, 1) #gera os parâmetros aleatórios da chamada
         first_fit = FirstFit(self.n_slots)
         rwa = RWA()
         count_block = 0
@@ -49,7 +49,7 @@ class Simulation_NetworkLoad:
             # update all channels that are still in use
             for link in links:
                 i, j = link
-                for s in range(self.n_slots): #self.n_slots
+                for s in range(self.n_slots):
                     # dijkstra + first-fit
                     if T[i][j][s] > interarrival_time:
                         T[i][j][s] -= interarrival_time
@@ -57,7 +57,7 @@ class Simulation_NetworkLoad:
                         T[i][j][s] = 0
                         if not N[i][j][s]:
                             N[i][j][s] = 1 # free channel
-
+        
         blocked = count_block/n_calls
         return load, blocked
 
@@ -82,7 +82,7 @@ class Simulation_NetworkLoad:
             # update all channels that are still in use
             for link in links:
                 i, j = link
-                for s in range(self.n_slots): #self.n_slots
+                for s in range(self.n_slots):
                     # dijkstra + first-fit
                     if T[i][j][s] > interarrival_time:
                         T[i][j][s] -= interarrival_time
@@ -120,7 +120,7 @@ class Simulation_NetworkLoad:
             # update all channels that are still in use
             for link in links:
                 i, j = link
-                for s in range(self.n_slots): #self.n_slots
+                for s in range(self.n_slots):
                     # dijkstra + first-fit
                     if T[i][j][s] > interarrival_time:
                         T[i][j][s] -= interarrival_time
@@ -179,7 +179,7 @@ class Simulation_NetworkLoad:
             # update all channels that are still in use
             for link in links:
                 i, j = link
-                for s in range(self.n_slots): #self.n_slots
+                for s in range(self.n_slots):
                     # dijkstra + first-fit
                     if T[i][j][s] > interarrival_time:
                         T[i][j][s] -= interarrival_time

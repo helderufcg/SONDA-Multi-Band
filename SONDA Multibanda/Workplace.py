@@ -16,8 +16,40 @@ import matplotlib.pyplot as plt
 
 ''''''
 
-Load = np.arange(70,300,10)
+Load = np.arange(70,300,20)
 
+PB22 = [0.0009458482935005088, 0.004182298005462081, 0.009404152873909118,
+        0.01675884028825205, 0.02624189781404991, 0.03764068204915873,
+        0.04420475643179206, 0.05421229534858506, 0.06390593047034765,
+        0.0730727073438071, 0.0821962847279303, 0.09550186228631459]
+
+PB21 = [0.0004234198605932451, 0.0022322474937441265, 0.006514573100024755,
+        0.012986507019207044, 0.020168609576055825, 0.02883256927024767,
+        0.03823068394693581, 0.04846839860411012, 0.058278454455387846,
+        0.06463706289186219, 0.0770891150169596, 0.08336807002917883]
+
+PB20 = [0.0001719783321059813, 0.001168666644851556, 0.0040927080221169945,
+        0.009201917679644438, 0.015249016438439721, 0.024021715630930363,
+        0.03329559832190184, 0.04297563281619322, 0.051939957409234926,
+        0.06228589224540641, 0.07012622720897616, 0.07940289026520565]
+
+PB19 = [9.456102926276156E-5, 0.0006589290820986101, 0.0026699703099301534,
+        0.0065055459779461994, 0.0121914050594331, 0.019726978615955182,
+        0.027359781121751026, 0.03695764653706852, 0.046227810650887574,
+        0.057501006267609685, 0.06430041152263374, 0.07594167679222358]
+
+plt.figure(1)
+plt.plot(Load, PB19, marker='s', markersize = 5, markeredgewidth = 3, markerfacecolor = 'w', linewidth = 3, color = "blue") 
+plt.plot(Load, PB20, marker='o', markersize = 5, markeredgewidth = 3, markerfacecolor = 'w', linewidth = 3, color = "Orange")                  
+plt.plot(Load, PB21, marker='^', markersize = 5, markeredgewidth = 2, markerfacecolor = 'w', linewidth = 3, color = "green")
+plt.plot(Load, PB22, marker='d', markersize = 5, markeredgewidth = 2, markerfacecolor = 'w', linewidth = 3, color = "red")
+plt.yscale('log')
+plt.xlabel("Carga na rede (Erlangs)")
+plt.ylabel("Probabilidade de Bloqueio")
+plt.legend([r"$\alpha$ = 0,19 dB/km",r"$\alpha$ = 0,20 dB/km",r"$\alpha$ = 0,21 dB/km",r"$\alpha$ = 0,22 dB/km"])
+plt.grid(true)
+
+"""
 PB1 = [1E-5, 2E-5, 16E-5, 62E-5, 109E-5,
        231E-5, 387E-5, 573E-5, 844E-5,
        1131E-5, 1540E-5, 1962E-5, 2343E-5,
@@ -118,8 +150,8 @@ plt.xlabel("Carga na rede (Erlangs)")
 plt.ylabel("Probabilidade de Bloqueio")
 plt.legend([r"$\alpha$ = 0.1912 dB/km | d$_a$$_m$$_p$ = 60 km ",r"$\alpha$ = 0.1912 dB/km | d$_a$$_m$$_p$ = 70 km",r"$\alpha$ = 0.1912 dB/km | d$_a$$_m$$_p$ = 80 km",r"$\alpha$ = 0.1912 dB/km | d$_a$$_m$$_p$ = 90 km",r"$\alpha$ = 0.22 dB/km | d$_a$$_m$$_p$ = 60 km ",r"$\alpha$ = 0.22 dB/km | d$_a$$_m$$_p$ = 70 km",r"$\alpha$ = 0.22 dB/km | d$_a$$_m$$_p$ = 80 km",r"$\alpha$ = 0.22 dB/km | d$_a$$_m$$_p$ = 90 km"])
 plt.grid(true)
+"""
 
-plt.show()
 
 """
 NFo = db_to_abs(NFO)
@@ -172,6 +204,6 @@ plt.xlabel("Comprimento de onda (m)")
 plt.ylabel("P[Ase] (dBm)")
 plt.legend([])
 plt.grid()
-plt.show()
 """
 
+plt.show()

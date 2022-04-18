@@ -27,7 +27,7 @@ def main():
                 raise ValueError('Invalid simualtion type.')
         '''
         #Escolha automática do tipo de simulação
-        simualtion_type = 2
+        simualtion_type = 1
         # --------------- Topologies ------------------
        
 
@@ -71,9 +71,9 @@ def main():
         A = adjNSFNet
         links = linksNSFNet
         '''
-        n_nodes = len(adjTop1)
-        A = adjTop1
-        links = linksTop1
+        n_nodes = len(adj01)
+        A = adj01
+        links = links01
         '''
         # --------------- Fiber selection ------------------
         '''
@@ -84,7 +84,7 @@ def main():
         # --------------- Band selection ------------------
         #Escolha automática do tipo da fibra
         
-        fiber_type = 1
+        fiber_type = 1 #1 == G652-D ; 2 == G652-A
         cont = 1
         all_slots = 64
         band_selection = Band_Selection()
@@ -184,12 +184,12 @@ def main():
         first_fit = FirstFit(all_slots)
         rwa = RWA()
         slots, times = rwa.Generate(n_nodes, links, first_fit)
-        N = slots.copy()
-        T = times.copy()
+        N = slots.copy() #shallow copy da matriz de slots
+        T = times.copy() #shallow copy da matriz de tráfego
         simulation = Simulation_NetworkLoad(all_slots, 193.4E12, fiber_type)
         grafics = Grafics()
         load_bp = []
-        pool = mp.Pool(mp.cpu_count())               
+        pool = mp.Pool(mp.cpu_count()) #cria um processo para cada núcleo e thread               
 
         # --------------- Simulation interval  ------------------
         '''
@@ -237,8 +237,8 @@ def main():
                 print('\nSimulation in progress...\n')
                 '''
 
-                n_calls = 100000 #Número de chamadas
-
+                n_calls = 10000 #Número de chamadas
+                print('\nSimulation in progress...\n')
                 t1 = time.time()
                 for load in range(min_traffic_load, max_traffic_load, traffic_load_step):
                         r = pool.apply_async(simulation.FixedCalls, args=(load, n_calls, n_nodes, links, A, N, T, network_type, wavelength_bandwidth, consider_ase_noise, damp), callback=load_bp.append)

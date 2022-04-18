@@ -14,8 +14,7 @@ class Fiber:
         """
         :param alpha_fiber: fiber loss coefficient, measured in dB per kilometer
         """
-        #alpha_fiber = Banda.getSlotsAttenuation(fiber_type,freq) #alpha_fiber = 0.1912
-        alpha_fiber = 0.22
+        alpha_fiber = Banda.getSlotsAttenuation(fiber_type,freq)
         self.alpha_fiber = alpha_fiber
 
     def FiberLoss(self, dij):

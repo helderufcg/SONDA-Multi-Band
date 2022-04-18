@@ -6,21 +6,32 @@ from Band_Selection import *
 
 Band = Band_Selection()
 
+NFl = NF_L(FL)
 NFc = NF_C(FC)
+#NFs = NF_S(FS)
+
+LL = c/FL
 LC = c/FC
+LS = c/FS
+
 '''
 plt.figure(1)
+plt.plot(FL, NFl, 'r-', linewidth=2)
 plt.plot(FC, NFc, 'r-', linewidth=2)
-plt.axis([188E12,202E12,3,9])
-plt.legend([r"F($f$)"])
+plt.plot(FS, NFs, 'y-', linewidth=2)
+plt.axis([184E12,206E12,3,9])
+plt.legend(["Banda L", "Banda C","Banda S"])
 plt.xlabel("Frequência (Hz)")
 plt.ylabel("Fator de ruído (dB)")
 plt.grid(true)
 '''
+
 plt.figure(2)
-plt.plot(LC, NFc, 'r-', linewidth=2)
-plt.axis([1525E-9,1570E-9,4,5])
-plt.legend([r"F($\lambda$)"])
+plt.plot(LL, NFl, 'r-', linewidth=2)
+plt.plot(LC, NFc, 'g-', linewidth=2)
+#plt.plot(LS, NFs, 'y-', linewidth=2)
+plt.axis([1460E-9,1625E-9,4,9])
+plt.legend(["Banda L", "Banda C","Banda S"])
 plt.xlabel("Comprimento de onda (m)")
 plt.ylabel("Fator de ruído (dB)")
 plt.grid(true)
