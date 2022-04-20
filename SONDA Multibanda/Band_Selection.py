@@ -31,6 +31,10 @@ class Band_Selection:
         
         return noise_figure
     
+    def getNoiseFigureAmplifier_C(self, Freq):
+        noise_figure = NF_C(Freq)
+        return noise_figure
+    
     def getSlotsAttenuation(self,fiber,Freq):
         if fiber == 1:
             A = Ag652D(Freq)

@@ -19,6 +19,14 @@ FreqC = 195.94E12
 FreqL = 191.56E12
 FreqU = 184.49E12
 
+#Central frequency (Hz)
+FcentralO = 228.85E12 #P/ 1310nm
+FcentralE = 212.62E12 #P/ 1410nm
+FcentralS = 200.53E12 #P/ 1495nm
+FcentralC = 193.41E12 #P/ 1550nm
+FcentralL = 187.96E12 #P/ 1595nm
+Fcentral  = 207.83E12 #P/ 1442.5nm
+
 #BandWidth (Hz)
 BandO = 17.500E12
 BandE = 15.098E12

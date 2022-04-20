@@ -1,5 +1,4 @@
 import os
-from Fiber import Fiber
 from PhysicalConstants import FcentralC
 from Topology import *
 from Band_Selection import *
