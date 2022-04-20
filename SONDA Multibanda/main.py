@@ -14,7 +14,7 @@ os.system('cls')
 
 def main():
         '''
-        with open('Modulations.txt','a') as text:
+        with open('Modulations21.txt','a') as text:
                 text.write('[')
         '''
         # --------------- Simualtion Types ------------------
@@ -218,7 +218,7 @@ def main():
                         raise ValueError('Invalid percentage.')
         '''
         min_traffic_load = 70
-        max_traffic_load = 300
+        max_traffic_load = 90
         traffic_load_step = 20
         """
         traffic_load = 5000
@@ -237,7 +237,7 @@ def main():
                 print('\nSimulation in progress...\n')
                 '''
 
-                n_calls = 10000 #Número de chamadas
+                n_calls = 100000 #Número de chamadas
                 print('\nSimulation in progress...\n')
                 t1 = time.time()
                 for load in range(min_traffic_load, max_traffic_load, traffic_load_step):
@@ -256,7 +256,7 @@ def main():
                 if n_blockages < 0:
                         raise ValueError('Invalid number of blockages.')
                 '''
-                n_blockages = 1000
+                n_blockages = 10
                 print('\nSimulation in progress...\n')
                 t1 = time.time()
                 for load in range(min_traffic_load, max_traffic_load, traffic_load_step):
@@ -296,7 +296,7 @@ def main():
         simulation.ShowResults(sorted(load_bp), simualtion_type)
         print('\nTime taken =', t2-t1, 'seconds')
         '''
-        with open('Modulations.txt','a') as text:
+        with open('Modulations21.txt','a') as text:
                 text.write(']\n')
         '''        
 if __name__ == '__main__':
