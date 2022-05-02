@@ -1,4 +1,5 @@
 import random
+import numpy as np
 
 """
 CallGenerator class implements methods to continuously generate calls.
@@ -36,10 +37,11 @@ class Call:
         return self.dst_node
        
     def BitRate(self):
-        bit_rates = [10E9, 40E9, 100E9, 160E9, 400E9]
-        bit_rate = bit_rates[random.randint(0, (len(bit_rates)-1))]         # Randomly assign bit rate
+        #bit_rates = [10E9, 40E9, 100E9, 160E9, 400E9]
+        #bit_rates = [100E9, 200E9, 300E9, 400E9, 500E9]
+        #bit_rate = bit_rates[random.randint(0, (len(bit_rates)-1))]         # Randomly assign bit rate
         # Continuous option below
-        # bit_rate = random.randint(10E9, 400E9)
+        bit_rate = random.randint(100E9, 500E9)
         return bit_rate 
 
     def InterarrivalTime(self):

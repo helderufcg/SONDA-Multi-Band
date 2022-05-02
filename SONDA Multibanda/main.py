@@ -1,5 +1,4 @@
 import os
-from PhysicalConstants import FcentralC
 from Topology import *
 from Band_Selection import *
 from RoutingWavelengthAssignment import RWA
@@ -13,7 +12,7 @@ os.system('cls')
 
 def main():
         '''
-        with open('Modulations21.txt','a') as text:
+        with open('Modulations22.txt','a') as text:
                 text.write('[')
         '''
         # --------------- Simualtion Types ------------------
@@ -26,7 +25,7 @@ def main():
                 raise ValueError('Invalid simualtion type.')
         '''
         #Escolha automática do tipo de simulação
-        simualtion_type = 1
+        simualtion_type = 2
         # --------------- Topologies ------------------
        
 
@@ -69,6 +68,13 @@ def main():
         n_nodes = len(adjNSFNet) 
         A = adjNSFNet
         links = linksNSFNet
+        
+        '''
+        n_nodes = len(adjUSBackbone)
+        A = adjUSBackbone
+        links = linksUSBackbone
+        '''
+                
         '''
         n_nodes = len(adj01)
         A = adj01
@@ -85,7 +91,7 @@ def main():
         
         fiber_type = 1 #1 == G652-D ; 2 == G652-A
         cont = 1
-        all_slots = 64
+        all_slots = 320
         band_selection = Band_Selection()
         control= [0, 0, 0, 0, 0]
         '''
@@ -191,7 +197,7 @@ def main():
         pool = mp.Pool(mp.cpu_count()) #cria um processo para cada núcleo e thread               
 
         # --------------- Simulation interval  ------------------
-        '''
+        ''''''
         if simualtion_type == 1 or simualtion_type == 2 or simualtion_type == 4:
                 min_traffic_load = int(input('\n>>> Enter the min. traffic load: '))    
                 if min_traffic_load < 0:
@@ -216,9 +222,10 @@ def main():
                 if percentage_step < 0:
                         raise ValueError('Invalid percentage.')
         '''
-        min_traffic_load = 70
-        max_traffic_load = 90
+        min_traffic_load = 150
+        max_traffic_load = 170
         traffic_load_step = 20
+        '''
         """
         traffic_load = 5000
         min_percentage = 0.2
@@ -229,14 +236,12 @@ def main():
 
         if simualtion_type == 1:
                 
-                '''
+                ''''''
                 n_calls = int(input('\n>>> Enter the number of calls: '))
                 if n_calls < 0:
                         raise ValueError('Invalid number of calls.')
-                print('\nSimulation in progress...\n')
-                '''
 
-                n_calls = 100000 #Número de chamadas
+                #n_calls = 100000 
                 print('\nSimulation in progress...\n')
                 t1 = time.time()
                 for load in range(min_traffic_load, max_traffic_load, traffic_load_step):
@@ -250,19 +255,21 @@ def main():
 
         #----------------------------Testar depois-------------------------------------
         elif simualtion_type == 2:
-                '''
+                ''''''
                 n_blockages = int(input('\n>>> Enter the number of blocked calls: '))        
                 if n_blockages < 0:
                         raise ValueError('Invalid number of blockages.')
-                '''
-                n_blockages = 10
+                
+                #n_blockages = 10
                 print('\nSimulation in progress...\n')
                 t1 = time.time()
                 for load in range(min_traffic_load, max_traffic_load, traffic_load_step):
                         r = pool.apply_async(simulation.FixedBlockages, args=(load, n_blockages, n_nodes, links, A, N, T, network_type, wavelength_bandwidth, consider_ase_noise, damp), callback=load_bp.append)
                 pool.close()
                 pool.join()
-                t2 = time.time()    
+                t2 = time.time()
+                
+                grafics.plot_topology(A)
                 grafics.plot_blocking_probability(load_bp)
 
         elif simualtion_type == 3:                  
@@ -295,8 +302,8 @@ def main():
         simulation.ShowResults(sorted(load_bp), simualtion_type)
         print('\nTime taken =', t2-t1, 'seconds')
         '''
-        with open('Modulations21.txt','a') as text:
+        with open('Modulations22.txt','a') as text:
                 text.write(']\n')
-        '''        
+        '''       
 if __name__ == '__main__':
     main()

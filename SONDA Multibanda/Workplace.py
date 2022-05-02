@@ -1,8 +1,3 @@
-from cmath import log
-from math import ceil
-from turtle import color
-from matplotlib import pyplot
-from sympy import true
 from Band_Selection import *
 from BandData import *
 from BandConstants import *
@@ -47,7 +42,7 @@ plt.yscale('log')
 plt.xlabel("Carga na rede (Erlangs)")
 plt.ylabel("Probabilidade de Bloqueio")
 plt.legend([r"$\alpha$ = 0,19 dB/km",r"$\alpha$ = 0,20 dB/km",r"$\alpha$ = 0,21 dB/km",r"$\alpha$ = 0,22 dB/km"])
-plt.grid(true)
+plt.grid(True)
 
 """
 PB1 = [1E-5, 2E-5, 16E-5, 62E-5, 109E-5,

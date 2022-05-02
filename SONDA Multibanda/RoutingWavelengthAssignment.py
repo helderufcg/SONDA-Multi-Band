@@ -1,4 +1,4 @@
-from PhysicalConstants import BSlot, FcentralC
+from BandConstants import BSlot, FcentralC
 from Dijkstra_RoutingAlgorithm import Dijkstra
 from FirstFit_ResourceAlgorithm import *
 from Signal import Signal 
@@ -59,11 +59,12 @@ class RWA:
         #usado para encontrar a frequência do slot
         '''
         a = []
+        
         slots = first_fit.FirstFit(N, T, route, 1)
         if slots == a:
-            frequency = FcentralC
+            frequency = FreqC
         else:
-            frequency = FcentralC - BSlot*slots[0]
+            frequency = FreqC - BSlot*slots[0]
         '''
         frequency = FcentralC
         
@@ -73,7 +74,7 @@ class RWA:
             if consider_ase_noise == 0:
                 required_slots = modulation.RequiredSlots(bit_rate, BSlot, M[0])
             else:                
-                for i in range(3):
+                for i in range(len(M)):
                     if signal.OutputOSNR(A, route, damp, frequency, fiber_type) > modulation.ThresholdOSNR(bit_rate, SNRb[i]):
                         required_slots = modulation.RequiredSlots(bit_rate, BSlot, M[i])
                         module = M[i]
@@ -99,8 +100,8 @@ class RWA:
                 for i in range(required_slots):
                     N[rcurr][rnext][slots_vector[i]] = 0
                     T[rcurr][rnext][slots_vector[i]] = holding_time #alteração na matriz de tráfego
-            '''        
-            with open('Modulations21.txt','a') as text:
+            '''       
+            with open('Modulations22.txt','a') as text:
                 text.write(str(module) + ',\n')
             '''    
             return 0  # allocated
