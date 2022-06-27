@@ -1,4 +1,3 @@
-from BandConstants import *
 from Band_Selection import Band_Selection
 from SSS import SSS
 from Fiber import Fiber
@@ -30,8 +29,11 @@ class Signal:
 
     def Summation(self, A, route, damp, fiber, freq):
         noise = []
-        #noise_figure = Band.getNoiseFigureAmplifier_C(freq)
+        
         noise_figure = 5
+        # Variable option below
+        #noise_figure = Band.getNoiseFigureAmplifier_C(freq)
+        
         for i in range(len(route)-1):
             dij = A[route[i]][route[i+1]]
             namp = inline_amplifier.NumberOfInlineAmplifiers(dij, damp)
@@ -59,6 +61,6 @@ class Signal:
         return output_noise_power
 
     def OutputOSNR(self, A, route, damp, freq, fiber_type):
-        fiber = Fiber(freq, fiber_type) #Fiber passa a ser instanciado aqui, e é passado como parâmetro aos demais métodos            
+        fiber = Fiber(freq, fiber_type)       
         output_OSNR = self.input_power/self.OutputNoisePower(A, route, damp, fiber, freq)
         return output_OSNR

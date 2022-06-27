@@ -5,16 +5,19 @@ from RoutingWavelengthAssignment import RWA
 from Simulation_NetworkLoad import Simulation_NetworkLoad
 from Grafics import Grafics
 from FirstFit_ResourceAlgorithm import FirstFit
+from tqdm import tqdm
 import multiprocessing as mp
 import time
 
 os.system('cls')
 
 def main():
+        
         '''
-        with open('Modulations22.txt','a') as text:
+        with open('ModulationsA1F1p.txt','a') as text:
                 text.write('[')
         '''
+        
         # --------------- Simualtion Types ------------------
         '''
         print('\n1 - Network load variation with fixed number of calls  \n2 - Network load variation with fixed number of blockages \n3 - Percentage variation on the network traffic load \n4 - BER variation')
@@ -24,11 +27,9 @@ def main():
         else:
                 raise ValueError('Invalid simualtion type.')
         '''
-        #Escolha automática do tipo de simulação
-        simualtion_type = 2
+        simualtion_type = 1
+        
         # --------------- Topologies ------------------
-       
-
         '''
         print('\n1 - Simple topology \n2 - Topology 1 \n3 - European \n4 - German \n5 - NSFNet \n6 - PacificBell \n7 - US Backbone')       
         topology = int(input('\n>>> Select a network topology: '))
@@ -63,41 +64,23 @@ def main():
         else:
                 raise ValueError('Invalid network topology.')
         '''
-        #Escolha automática da topologia
-        
         n_nodes = len(adjNSFNet) 
         A = adjNSFNet
         links = linksNSFNet
         
-        '''
-        n_nodes = len(adjUSBackbone)
-        A = adjUSBackbone
-        links = linksUSBackbone
-        '''
-                
-        '''
-        n_nodes = len(adj01)
-        A = adj01
-        links = links01
-        '''
         # --------------- Fiber selection ------------------
         '''
         print('\n1 - ITU-T G652-D \n2 - ITU-T G652-A ')       
         fiber_type = int(input('\n>>> Select fiber type: '))
         '''
-
+        fiber_type = 2 #1 == G652-A ; 2 == G652-D
+        
         # --------------- Band selection ------------------
-        #Escolha automática do tipo da fibra
-        
-        fiber_type = 1 #1 == G652-D ; 2 == G652-A
-        cont = 1
-        all_slots = 320
-        band_selection = Band_Selection()
-        control= [0, 0, 0, 0, 0]
         '''
-        
+        aux = 1
+        control= [0, 0, 0, 0, 0]
         if fiber_type == 1 or fiber_type == 2:
-                while(cont!=0):
+                while(aux!=0):
                         print('All Slots:', all_slots)
                         print('\n| Banda O:',control[0],' | Banda E:',control[1],' | Banda S:',control[2],' | Banda C:',control[3],' | Banda L:',control[4])
                         print('\n1 - O-Band \n2 - E-Band \n3 - S-Band \n4 - C-Band \n5 - L-Band \n6 - Default \n7 - Clear \n8 - Close')
@@ -106,31 +89,31 @@ def main():
 
                         if band == 1:
                                 if control[0] == 0:
-                                        all_slots = all_slots + len(band_selection.getSlotsAttenuation_O(fiber_type))
+                                        all_slots = all_slots + 1400
                                         control[0] = 1
                                 else:
                                         raise ValueError('The band has already been selected.')
                         elif band ==2:
                                 if control[1] == 0:
-                                        all_slots = all_slots + len(band_selection.getSlotsAttenuation_E(fiber_type))
+                                        all_slots = all_slots + 1208
                                         control[1] = 1
                                 else:
                                         raise ValueError('The band has already been selected.')
                         elif band ==3:
                                 if control[2] == 0:
-                                        all_slots = all_slots + len(band_selection.getSlotsAttenuation_S(fiber_type))
+                                        all_slots = all_slots + 752
                                         control[2] = 1
                                 else:
                                         raise ValueError('The band has already been selected.')        
                         elif band ==4:
                                 if control[3] == 0:
-                                        all_slots = all_slots + len(band_selection.getSlotsAttenuation_C(fiber_type))
+                                        all_slots = all_slots + 351
                                         control[3] = 1
                                 else:
                                         raise ValueError('The band has already been selected.')        
                         elif band ==5:
                                 if control[4] == 0:
-                                        all_slots = all_slots + len(band_selection.getSlotsAttenuation_L(fiber_type))
+                                        all_slots = all_slots + 566
                                         control[4] = 1
                                 else:
                                         raise ValueError('The band has already been selected.')        
@@ -141,13 +124,17 @@ def main():
                                 all_slots = 0
                                 control = [0, 0, 0, 0, 0]
                         elif band == 8:
-                                cont = 0
+                                aux = 0
                         else:
                                 raise ValueError('Invalid band.')
         
         else:
                 raise ValueError('Invalid fiber type.') #Falta implementar a modelagem para fibras com o pico d'água -> Fazer fit da função atenuação de cada banda
         '''
+        
+        all_slots = 320
+        control= [0, 0, 0, 0, 0]
+        
         # --------------- Network Types ------------------
         '''
         print('\n1 - WDM  \n2 - EON')    
@@ -191,13 +178,13 @@ def main():
         slots, times = rwa.Generate(n_nodes, links, first_fit)
         N = slots.copy() #shallow copy da matriz de slots
         T = times.copy() #shallow copy da matriz de tráfego
-        simulation = Simulation_NetworkLoad(all_slots, 193.4E12, fiber_type)
+        simulation = Simulation_NetworkLoad(all_slots, control, fiber_type)
         grafics = Grafics()
         load_bp = []
         pool = mp.Pool(mp.cpu_count()) #cria um processo para cada núcleo e thread               
 
         # --------------- Simulation interval  ------------------
-        ''''''
+        '''
         if simualtion_type == 1 or simualtion_type == 2 or simualtion_type == 4:
                 min_traffic_load = int(input('\n>>> Enter the min. traffic load: '))    
                 if min_traffic_load < 0:
@@ -221,27 +208,28 @@ def main():
                 percentage_step = int(input('\n>>> Enter the percentage step: '))
                 if percentage_step < 0:
                         raise ValueError('Invalid percentage.')
-        '''
-        min_traffic_load = 150
-        max_traffic_load = 170
-        traffic_load_step = 20
-        '''
-        """
+                        '''
+        ''''''
+        min_traffic_load = 600
+        max_traffic_load = 700
+        traffic_load_step = 5
+        
+        ''''''
         traffic_load = 5000
         min_percentage = 0.2
         max_percentage = 0.7
         percentage_step = 0.01
-        """
+        
         # --------------- Simulation interval  ------------------
 
         if simualtion_type == 1:
                 
-                ''''''
+                '''
                 n_calls = int(input('\n>>> Enter the number of calls: '))
                 if n_calls < 0:
                         raise ValueError('Invalid number of calls.')
-
-                #n_calls = 100000 
+                '''
+                n_calls = 1000
                 print('\nSimulation in progress...\n')
                 t1 = time.time()
                 for load in range(min_traffic_load, max_traffic_load, traffic_load_step):
@@ -255,12 +243,12 @@ def main():
 
         #----------------------------Testar depois-------------------------------------
         elif simualtion_type == 2:
-                ''''''
+                '''
                 n_blockages = int(input('\n>>> Enter the number of blocked calls: '))        
                 if n_blockages < 0:
                         raise ValueError('Invalid number of blockages.')
-                
-                #n_blockages = 10
+                '''
+                n_blockages = 10
                 print('\nSimulation in progress...\n')
                 t1 = time.time()
                 for load in range(min_traffic_load, max_traffic_load, traffic_load_step):
@@ -302,8 +290,9 @@ def main():
         simulation.ShowResults(sorted(load_bp), simualtion_type)
         print('\nTime taken =', t2-t1, 'seconds')
         '''
-        with open('Modulations22.txt','a') as text:
+        with open('ModulationsA1F1p.txt','a') as text:
                 text.write(']\n')
-        '''       
+        '''
+               
 if __name__ == '__main__':
     main()

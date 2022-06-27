@@ -1,4 +1,3 @@
-
 import matplotlib.pyplot as plt
 from Data_MD_2 import MD22, MD21, MD20, MD19
 import seaborn as sns

@@ -1,4 +1,4 @@
-from PhysicalConstants import h, FcentralC, BRef
+from BandConstants import h, BRef
 from UnitConversion import db_to_abs
 
 """

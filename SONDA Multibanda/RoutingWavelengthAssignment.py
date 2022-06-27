@@ -1,14 +1,13 @@
-from BandConstants import BSlot, FcentralC
+from BandConstants import BSlot, FreqC
 from Dijkstra_RoutingAlgorithm import Dijkstra
-from FirstFit_ResourceAlgorithm import *
 from Signal import Signal 
 from Modulation import Modulation
 import math
+import numpy as np
 
 dijkstra = Dijkstra()
 signal = Signal()
 modulation = Modulation()
-#first_fit = FirstFit()
 
 """
 The RoutingWavelengthAssignment class contains the routing and
@@ -28,16 +27,16 @@ class RWA:
         for link in links:
             for s in range(first_fit.get_N_slots()):
                 slot_availability = 1
-                slot[link[0]][link[1]][s] = slot_availability #??
-                slot[link[1]][link[0]][s] = slot_availability #??
+                slot[link[0]][link[1]][s] = slot_availability 
+                slot[link[1]][link[0]][s] = slot_availability 
 
         # init traffic matrix
-        dimension = (n_nodes, n_nodes, first_fit.get_N_slots()) #cria um array dimension n_nodes x n_nodes x n_slots
-        time = np.zeros(shape=dimension, dtype=np.float64) #faz o array receber 0 float 64bits em todas as posições
+        dimension = (n_nodes, n_nodes, first_fit.get_N_slots())
+        time = np.zeros(shape=dimension, dtype=np.float64) 
         for link in links: #em cada link dessa topologia
             for s in range(first_fit.get_N_slots()): #percorrendo cada um dos slots disponíveis
-                time[link[0]][link[1]][s] = 0 #Pq passar 0 novamente?
-                time[link[1]][link[0]][s] = 0 #??
+                time[link[0]][link[1]][s] = 0 
+                time[link[1]][link[0]][s] = 0 
 
         return slot, time
 
@@ -57,7 +56,7 @@ class RWA:
             SNRb = modulation.SNRb04
         
         #usado para encontrar a frequência do slot
-        '''
+        ''''''
         a = []
         
         slots = first_fit.FirstFit(N, T, route, 1)
@@ -65,8 +64,8 @@ class RWA:
             frequency = FreqC
         else:
             frequency = FreqC - BSlot*slots[0]
-        '''
-        frequency = FcentralC
+        
+        #frequency = FcentralC
         
         if network_type == 1:
             required_slots = math.ceil((wavelength_bandwidth*10**9)/BSlot)
@@ -100,10 +99,10 @@ class RWA:
                 for i in range(required_slots):
                     N[rcurr][rnext][slots_vector[i]] = 0
                     T[rcurr][rnext][slots_vector[i]] = holding_time #alteração na matriz de tráfego
-            '''       
-            with open('Modulations22.txt','a') as text:
+            '''         
+            with open('ModulationsA1F1p.txt','a') as text:
                 text.write(str(module) + ',\n')
-            '''    
+            '''  
             return 0  # allocated
         else:
             return 1  # blocked

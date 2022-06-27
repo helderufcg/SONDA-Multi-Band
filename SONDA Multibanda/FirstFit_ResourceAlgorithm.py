@@ -1,10 +1,5 @@
 import numpy as np
 
-from BandConstants import BSlot, FreqC
-
-#global n_slots
-#n_slots = 32
-
 """
 The FirstFit class represents the First Fit spectrum assignment algorithm.
 It tries to allocate the requisition on the first block of slots that are 
@@ -20,6 +15,11 @@ class FirstFit:
     def get_N_slots(self):
         return self.n_slots
 
+    def SlotFrequency(self, N, T, route, band):
+        frequency = 1
+        
+        return frequency
+    
     def VerifyContiguity(self, vector):
         if np.size(vector) > 1: 
             for i in range(np.size(vector)-1): 

@@ -1,6 +1,6 @@
 from CallGenerator import Call
 from RoutingWavelengthAssignment import RWA
-from FirstFit_ResourceAlgorithm import *
+from FirstFit_ResourceAlgorithm import FirstFit
 import random
 from prettytable import PrettyTable
 import pandas as pd

@@ -1,5 +1,5 @@
 from UnitConversion import db_to_abs
-from Band_Selection import *
+from Band_Selection import Band_Selection
 
 Banda = Band_Selection()
 
@@ -14,8 +14,10 @@ class Fiber:
         """
         :param alpha_fiber: fiber loss coefficient, measured in dB per kilometer
         """
+        alpha_fiber = 0.22
+        # Variable option below
         #alpha_fiber = Banda.getSlotsAttenuation(fiber_type,freq)
-        alpha_fiber = 0.21
+        
         self.alpha_fiber = alpha_fiber
 
     def FiberLoss(self, dij):

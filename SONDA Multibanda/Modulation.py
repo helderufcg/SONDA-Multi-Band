@@ -1,6 +1,6 @@
 import math
 from UnitConversion import db_to_abs
-from PhysicalConstants import BRef, numPolarizations
+from BandConstants import BRef, numPolarizations
 
 """
 The Modulation class represents a modulation scheme.
