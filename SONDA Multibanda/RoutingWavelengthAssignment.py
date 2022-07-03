@@ -1,4 +1,6 @@
-from BandConstants import BSlot, FreqC
+from BandConstants import BSlot
+from Band_Selection import Band_Selection
+from Save_Data import Save
 from Dijkstra_RoutingAlgorithm import Dijkstra
 from Signal import Signal 
 from Modulation import Modulation
@@ -8,6 +10,11 @@ import numpy as np
 dijkstra = Dijkstra()
 signal = Signal()
 modulation = Modulation()
+save = Save()
+
+#Arquivo de salvamento dos dados de modulação
+global file
+file = 'Modulations.txt'
 
 """
 The RoutingWavelengthAssignment class contains the routing and
@@ -42,9 +49,10 @@ class RWA:
 
     def RWA(self, A, N, T, src_node, dst_node, holding_time, bit_rate, network_type, wavelength_bandwidth, consider_ase_noise, damp, number, first_fit, freq, fiber_type):
         # defining the best route according to the dijkstra algorithm 
-
+        
         route = dijkstra.Dijkstra(A, src_node, dst_node)
-
+        band = Band_Selection()
+        
         M = modulation.M
         if number > 0 and number <= 25:
             SNRb = modulation.SNRb01
@@ -56,16 +64,7 @@ class RWA:
             SNRb = modulation.SNRb04
         
         #usado para encontrar a frequência do slot
-        ''''''
-        a = []
-        
-        slots = first_fit.FirstFit(N, T, route, 1)
-        if slots == a:
-            frequency = FreqC
-        else:
-            frequency = FreqC - BSlot*slots[0]
-        
-        #frequency = FcentralC
+        frequency = band.getSlotFrequency(first_fit, N, T, route)
         
         if network_type == 1:
             required_slots = math.ceil((wavelength_bandwidth*10**9)/BSlot)
@@ -99,10 +98,9 @@ class RWA:
                 for i in range(required_slots):
                     N[rcurr][rnext][slots_vector[i]] = 0
                     T[rcurr][rnext][slots_vector[i]] = holding_time #alteração na matriz de tráfego
-            '''         
-            with open('ModulationsA1F1p.txt','a') as text:
-                text.write(str(module) + ',\n')
-            '''  
+            
+            save.Modulation(file, module)
+
             return 0  # allocated
         else:
             return 1  # blocked

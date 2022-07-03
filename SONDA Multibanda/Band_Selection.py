@@ -26,3 +26,10 @@ class Band_Selection:
             return A
         else:
             return 0
+    def getSlotFrequency(self, first_fit, N, T, route):
+        slots = first_fit.FirstFit(N, T, route, 1)
+        if slots == []:
+            frequency = FreqC
+        else:
+            frequency = FreqC - BSlot*slots[0]
+        return frequency

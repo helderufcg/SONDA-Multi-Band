@@ -1,36 +1,31 @@
 import os
 from Topology import *
 from Band_Selection import *
-from RoutingWavelengthAssignment import RWA
+from RoutingWavelengthAssignment import RWA, file
+from Save_Data import Save
 from Simulation_NetworkLoad import Simulation_NetworkLoad
 from Grafics import Grafics
 from FirstFit_ResourceAlgorithm import FirstFit
-from tqdm import tqdm
 import multiprocessing as mp
 import time
 
-os.system('cls')
+
 
 def main():
+        os.system('cls')
         
-        '''
-        with open('ModulationsA1F1p.txt','a') as text:
-                text.write('[')
-        '''
+        save = Save()
+        save.Modulation_Begin(file)
         
         # --------------- Simualtion Types ------------------
-        '''
         print('\n1 - Network load variation with fixed number of calls  \n2 - Network load variation with fixed number of blockages \n3 - Percentage variation on the network traffic load \n4 - BER variation')
         simualtion_type = int(input('\n>>> Define a simulation to run: '))
         if simualtion_type == 1 or simualtion_type == 2 or simualtion_type == 3 or simualtion_type == 4:
                 pass
         else:
                 raise ValueError('Invalid simualtion type.')
-        '''
-        simualtion_type = 1
         
         # --------------- Topologies ------------------
-        '''
         print('\n1 - Simple topology \n2 - Topology 1 \n3 - European \n4 - German \n5 - NSFNet \n6 - PacificBell \n7 - US Backbone')       
         topology = int(input('\n>>> Select a network topology: '))
         if topology == 1:
@@ -63,26 +58,20 @@ def main():
                 links = linksUSBackbone         
         else:
                 raise ValueError('Invalid network topology.')
-        '''
-        n_nodes = len(adjNSFNet) 
-        A = adjNSFNet
-        links = linksNSFNet
+
         
         # --------------- Fiber selection ------------------
-        '''
         print('\n1 - ITU-T G652-D \n2 - ITU-T G652-A ')       
         fiber_type = int(input('\n>>> Select fiber type: '))
-        '''
-        fiber_type = 2 #1 == G652-A ; 2 == G652-D
         
         # --------------- Band selection ------------------
-        '''
         aux = 1
+        all_slots = 0
         control= [0, 0, 0, 0, 0]
         if fiber_type == 1 or fiber_type == 2:
                 while(aux!=0):
-                        print('All Slots:', all_slots)
-                        print('\n| Banda O:',control[0],' | Banda E:',control[1],' | Banda S:',control[2],' | Banda C:',control[3],' | Banda L:',control[4])
+                        print('\nAll Slots:', all_slots)
+                        print('\n| O-Band:',control[0],' | E-Band:',control[1],' | S-Band:',control[2],' | C-Band:',control[3],' | L-Band:',control[4],' |')
                         print('\n1 - O-Band \n2 - E-Band \n3 - S-Band \n4 - C-Band \n5 - L-Band \n6 - Default \n7 - Clear \n8 - Close')
                         band = int(input('\n>>> Select the bands (One at a time): '))
                         print('\n')
@@ -129,15 +118,10 @@ def main():
                                 raise ValueError('Invalid band.')
         
         else:
-                raise ValueError('Invalid fiber type.') #Falta implementar a modelagem para fibras com o pico d'água -> Fazer fit da função atenuação de cada banda
-        '''
-        
-        all_slots = 320
-        control= [0, 0, 0, 0, 0]
+                raise ValueError('Invalid fiber type.')
         
         # --------------- Network Types ------------------
-        '''
-        print('\n1 - WDM  \n2 - EON')    
+        print('1 - WDM  \n2 - EON')    
         network_type = int(input('\n>>> Select a network type: '))
         if network_type == 1 or network_type == 2:
                 if network_type == 1:
@@ -150,27 +134,18 @@ def main():
                         wavelength_bandwidth = None
         else:
                 raise ValueError('Invalid network type.')
-        '''
-        wavelength_bandwidth = None
-        network_type = 2 #EON
 
         # --------------- Consider ASE ------------------
-        '''
         consider_ase_noise = int(input('\n>>> Consider ASE noise? (0 - No | 1 - Yes): '))
         if consider_ase_noise == 0 or consider_ase_noise == 1:
                 pass
         else:        
                 raise ValueError('The option entered is invalid.')
-        '''
-        consider_ase_noise = 1 #ASE ativado
 
         # --------------- Network Types ------------------
-        '''
         damp = float(input('\n>>> Enter the distance between inline amplifiers in Km: '))
         if damp < 0:
-                raise ValueError('The distance between inline amplifiers must be positive.')
-        '''
-        damp = 70 #Distância entre os amplificadores de linha de 60Km    
+                raise ValueError('The distance between inline amplifiers must be positive.')   
         
         # --------------- Parameters and Simulation  ------------------
         first_fit = FirstFit(all_slots)
@@ -184,7 +159,6 @@ def main():
         pool = mp.Pool(mp.cpu_count()) #cria um processo para cada núcleo e thread               
 
         # --------------- Simulation interval  ------------------
-        '''
         if simualtion_type == 1 or simualtion_type == 2 or simualtion_type == 4:
                 min_traffic_load = int(input('\n>>> Enter the min. traffic load: '))    
                 if min_traffic_load < 0:
@@ -208,28 +182,13 @@ def main():
                 percentage_step = int(input('\n>>> Enter the percentage step: '))
                 if percentage_step < 0:
                         raise ValueError('Invalid percentage.')
-                        '''
-        ''''''
-        min_traffic_load = 600
-        max_traffic_load = 700
-        traffic_load_step = 5
-        
-        ''''''
-        traffic_load = 5000
-        min_percentage = 0.2
-        max_percentage = 0.7
-        percentage_step = 0.01
         
         # --------------- Simulation interval  ------------------
-
         if simualtion_type == 1:
-                
-                '''
                 n_calls = int(input('\n>>> Enter the number of calls: '))
                 if n_calls < 0:
                         raise ValueError('Invalid number of calls.')
-                '''
-                n_calls = 1000
+                
                 print('\nSimulation in progress...\n')
                 t1 = time.time()
                 for load in range(min_traffic_load, max_traffic_load, traffic_load_step):
@@ -243,12 +202,10 @@ def main():
 
         #----------------------------Testar depois-------------------------------------
         elif simualtion_type == 2:
-                '''
                 n_blockages = int(input('\n>>> Enter the number of blocked calls: '))        
                 if n_blockages < 0:
                         raise ValueError('Invalid number of blockages.')
-                '''
-                n_blockages = 10
+
                 print('\nSimulation in progress...\n')
                 t1 = time.time()
                 for load in range(min_traffic_load, max_traffic_load, traffic_load_step):
@@ -262,6 +219,9 @@ def main():
 
         elif simualtion_type == 3:                  
                 n_calls = int(input('\n>>> Enter the number of calls: '))
+                if n_calls < 0:
+                        raise ValueError('Invalid number of calls.')
+                
                 print('\nSimulation in progress...\n')                
                 t1 = time.time()
                 for percentage in range(min_percentage, max_percentage, percentage_step):
@@ -272,8 +232,10 @@ def main():
                 # simulation.SaveResults(sorted(load_bp))
 
         else: 
-                #n_calls = int(input('\n>>> Enter the number of calls: '))
-                n_calls = 10000 #Número de chamadas
+                n_calls = int(input('\n>>> Enter the number of calls: '))
+                if n_calls < 0:
+                        raise ValueError('Invalid number of calls.')
+                
                 print('\nSimulation in progress...\n')                
                 t1 = time.time()
                 for load in range(min_traffic_load, max_traffic_load, traffic_load_step):
@@ -288,11 +250,8 @@ def main():
         # --------------- Results ------------------
 
         simulation.ShowResults(sorted(load_bp), simualtion_type)
+        save.Modulation_End(file)
         print('\nTime taken =', t2-t1, 'seconds')
-        '''
-        with open('ModulationsA1F1p.txt','a') as text:
-                text.write(']\n')
-        '''
                
 if __name__ == '__main__':
     main()
