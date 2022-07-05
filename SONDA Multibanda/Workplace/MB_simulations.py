@@ -2,7 +2,7 @@
 from cmath import log
 from matplotlib import pyplot
 import scipy
-from Band_Selection import *
+from BandSelection import *
 from BandData import *
 from BandConstants import *
 from PhysicalConstants import *

@@ -1,5 +1,4 @@
 import random
-import numpy as np
 
 """
 CallGenerator class implements methods to continuously generate calls.

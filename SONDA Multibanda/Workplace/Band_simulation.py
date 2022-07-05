@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from sympy import true
-from Band_Selection import *
+from BandSelection import *
 
 Band = Band_Selection()
 

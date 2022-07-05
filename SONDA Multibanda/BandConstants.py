@@ -8,6 +8,7 @@ import numpy as np
     FreqCX: Central light's frequency of the X-Band.
     BX: Bandwidth of each X-Band.
     FX: FSUs array of each X-Band.
+    FEX: Effective FSUs array of each X-Band (Referring to the slots covered by the amplifier)
     NFX: Constante noise figure of each X-Band.
     BSlot: Slot reference bandwidth
     BRef:  Reference bandwidth.
@@ -59,14 +60,11 @@ FS = np.arange(FreqS,FreqC,-BSlot)
 FC = np.arange(FreqC,FreqL,-BSlot)
 FL = np.arange(FreqL,FreqU,-BSlot)
 
-#FSUs efetivos
 FES = np.arange(FreqS,197.2184E12,-BSlot)
 FEL = np.arange(190.9292E12,185.8263E12,-BSlot)
 
-slotsS = 650
-slotsC = 351
-slotsL = 409
-
-#Slots efetivos Banda C: 351
-#slots efetivos Banda L: 409
-#slots efetivos Banda S: 650
+"""
+    Effective S-Band Slots: 650
+    Effective C-Band Slots: 351
+    Effective L-Band Slots: 409
+"""

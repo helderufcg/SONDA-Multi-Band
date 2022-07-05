@@ -1,3 +1,7 @@
+"""
+The Save class is responsible for organizing the saving of simulation data in independent files.
+
+"""
 
 class Save:
     def __init__(self):

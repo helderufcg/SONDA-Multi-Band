@@ -1,4 +1,3 @@
-
 # ----------- Sonda Classes gerais ------------
 import sys
 

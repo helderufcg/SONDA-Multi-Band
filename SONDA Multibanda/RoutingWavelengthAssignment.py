@@ -1,6 +1,6 @@
 from BandConstants import BSlot
-from Band_Selection import Band_Selection
-from Save_Data import Save
+from BandSelection import Band_Selection
+from SaveData import Save
 from Dijkstra_RoutingAlgorithm import Dijkstra
 from Signal import Signal 
 from Modulation import Modulation
@@ -12,7 +12,6 @@ signal = Signal()
 modulation = Modulation()
 save = Save()
 
-#Arquivo de salvamento dos dados de modulação
 global file
 file = 'Modulations.txt'
 
@@ -40,14 +39,14 @@ class RWA:
         # init traffic matrix
         dimension = (n_nodes, n_nodes, first_fit.get_N_slots())
         time = np.zeros(shape=dimension, dtype=np.float64) 
-        for link in links: #em cada link dessa topologia
-            for s in range(first_fit.get_N_slots()): #percorrendo cada um dos slots disponíveis
+        for link in links:
+            for s in range(first_fit.get_N_slots()):
                 time[link[0]][link[1]][s] = 0 
                 time[link[1]][link[0]][s] = 0 
 
         return slot, time
 
-    def RWA(self, A, N, T, src_node, dst_node, holding_time, bit_rate, network_type, wavelength_bandwidth, consider_ase_noise, damp, number, first_fit, freq, fiber_type):
+    def RWA(self, A, N, T, src_node, dst_node, holding_time, bit_rate, network_type, wavelength_bandwidth, consider_ase_noise, damp, number, first_fit, fiber_type, band_control):
         # defining the best route according to the dijkstra algorithm 
         
         route = dijkstra.Dijkstra(A, src_node, dst_node)
@@ -63,7 +62,6 @@ class RWA:
         else:    
             SNRb = modulation.SNRb04
         
-        #usado para encontrar a frequência do slot
         frequency = band.getSlotFrequency(first_fit, N, T, route)
         
         if network_type == 1:
@@ -73,7 +71,7 @@ class RWA:
                 required_slots = modulation.RequiredSlots(bit_rate, BSlot, M[0])
             else:                
                 for i in range(len(M)):
-                    if signal.OutputOSNR(A, route, damp, frequency, fiber_type) > modulation.ThresholdOSNR(bit_rate, SNRb[i]):
+                    if signal.OutputOSNR(A, route, damp, fiber_type, frequency) > modulation.ThresholdOSNR(bit_rate, SNRb[i]):
                         required_slots = modulation.RequiredSlots(bit_rate, BSlot, M[i])
                         module = M[i]
                         color = 0
@@ -84,7 +82,7 @@ class RWA:
                     return 1 #blocked              
         
         # defining the slots to be alocated First_fit.get_N_slots()
-        slots_vector = first_fit.FirstFit(N, T, route, required_slots) #Vetor de slots requisitados (matriz slots, matriz tráfego, rota dijkstra, slots solicitados)
+        slots_vector = first_fit.FirstFit(N, T, route, required_slots)
 
         if slots_vector:        
             # if the resulting slot vector is not contiguous         
@@ -97,7 +95,7 @@ class RWA:
                 rnext = route[r+1]
                 for i in range(required_slots):
                     N[rcurr][rnext][slots_vector[i]] = 0
-                    T[rcurr][rnext][slots_vector[i]] = holding_time #alteração na matriz de tráfego
+                    T[rcurr][rnext][slots_vector[i]] = holding_time
             
             save.Modulation(file, module)
 

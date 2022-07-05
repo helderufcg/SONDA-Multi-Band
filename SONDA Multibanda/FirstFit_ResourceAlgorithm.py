@@ -14,11 +14,6 @@ class FirstFit:
     
     def get_N_slots(self):
         return self.n_slots
-
-    def SlotFrequency(self, N, T, route, band):
-        frequency = 1
-        
-        return frequency
     
     def VerifyContiguity(self, vector):
         if np.size(vector) > 1: 
@@ -33,9 +28,9 @@ class FirstFit:
             return 1
 
     def FirstFit(self, N, T, route, required_slots):
-        aux = [1]*self.n_slots # criar uma lista auxiliar com 1 em todas as posições e número de posições igual a n_slots
+        aux = [1]*self.n_slots
         dimension = (len(route)-1, self.n_slots)
-        FFlists = np.zeros(shape=dimension, dtype=np.uint8) #cria uma matriz com (nºrotas-1)x(nºslots) e todos os elementos são zero inteiro 8 bits positivos
+        FFlists = np.zeros(shape=dimension, dtype=np.uint8)
     
         # checking which slots are available on each link of the route
         for r in range(len(route)-1): 
@@ -47,13 +42,13 @@ class FirstFit:
         # checking which slots are available on all links of the route
         for r in range(len(route)-1):
             result = np.logical_and(aux, FFlists[r])           
-            aux = result #array com o status de cada slot
+            aux = result 
             
         slots_vector = []    
         # applying first-fit to the resulting list
         for s in range(self.n_slots-required_slots+1): 
-            for slot in range(s, s+required_slots, 1): #!!! variando dentro dos slots requisitados
-                if result[slot]: #se for 0, significa que não há disponibilidade
+            for slot in range(s, s+required_slots, 1): 
+                if result[slot]: 
                     slots_vector.append(slot)
             if self.VerifyContiguity(slots_vector) and np.size(slots_vector) == required_slots:            
                 break

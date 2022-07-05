@@ -1,4 +1,4 @@
-from Band_Selection import *
+from BandSelection import *
 from BandData import *
 from BandConstants import *
 from PhysicalConstants import *

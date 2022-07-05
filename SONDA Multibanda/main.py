@@ -1,8 +1,8 @@
-import os
+from os import system
 from Topology import *
-from Band_Selection import *
+from BandSelection import *
 from RoutingWavelengthAssignment import RWA, file
-from Save_Data import Save
+from SaveData import Save
 from Simulation_NetworkLoad import Simulation_NetworkLoad
 from Grafics import Grafics
 from FirstFit_ResourceAlgorithm import FirstFit
@@ -10,9 +10,8 @@ import multiprocessing as mp
 import time
 
 
-
 def main():
-        os.system('cls')
+        system('cls')
         
         save = Save()
         save.Modulation_Begin(file)
@@ -60,11 +59,11 @@ def main():
                 raise ValueError('Invalid network topology.')
 
         
-        # --------------- Fiber selection ------------------
-        print('\n1 - ITU-T G652-D \n2 - ITU-T G652-A ')       
+        # --------------- Fiber Selection ------------------
+        print('\n1 - ITU-T G652-A \n2 - ITU-T G652-D ')       
         fiber_type = int(input('\n>>> Select fiber type: '))
         
-        # --------------- Band selection ------------------
+        # --------------- Band Selection ------------------
         aux = 1
         all_slots = 0
         control= [0, 0, 0, 0, 0]
@@ -120,6 +119,8 @@ def main():
         else:
                 raise ValueError('Invalid fiber type.')
         
+        all_slots = 320
+        
         # --------------- Network Types ------------------
         print('1 - WDM  \n2 - EON')    
         network_type = int(input('\n>>> Select a network type: '))
@@ -135,14 +136,14 @@ def main():
         else:
                 raise ValueError('Invalid network type.')
 
-        # --------------- Consider ASE ------------------
+        # --------------- Consider ASE Noise ------------------
         consider_ase_noise = int(input('\n>>> Consider ASE noise? (0 - No | 1 - Yes): '))
         if consider_ase_noise == 0 or consider_ase_noise == 1:
                 pass
         else:        
                 raise ValueError('The option entered is invalid.')
 
-        # --------------- Network Types ------------------
+        # --------------- Distance Between Amplifiers (Damp) ------------------
         damp = float(input('\n>>> Enter the distance between inline amplifiers in Km: '))
         if damp < 0:
                 raise ValueError('The distance between inline amplifiers must be positive.')   
@@ -151,12 +152,12 @@ def main():
         first_fit = FirstFit(all_slots)
         rwa = RWA()
         slots, times = rwa.Generate(n_nodes, links, first_fit)
-        N = slots.copy() #shallow copy da matriz de slots
-        T = times.copy() #shallow copy da matriz de tráfego
-        simulation = Simulation_NetworkLoad(all_slots, control, fiber_type)
+        N = slots.copy() #shallow copy
+        T = times.copy()
+        simulation = Simulation_NetworkLoad(all_slots, fiber_type, control)
         grafics = Grafics()
         load_bp = []
-        pool = mp.Pool(mp.cpu_count()) #cria um processo para cada núcleo e thread               
+        pool = mp.Pool(mp.cpu_count())          
 
         # --------------- Simulation interval  ------------------
         if simualtion_type == 1 or simualtion_type == 2 or simualtion_type == 4:
@@ -183,7 +184,7 @@ def main():
                 if percentage_step < 0:
                         raise ValueError('Invalid percentage.')
         
-        # --------------- Simulation interval  ------------------
+        # --------------- Network Load Variation Simulation with Fixed Calls ------------------
         if simualtion_type == 1:
                 n_calls = int(input('\n>>> Enter the number of calls: '))
                 if n_calls < 0:
@@ -198,9 +199,8 @@ def main():
                 t2 = time.time()
                 grafics.plot_topology(A)
                 grafics.plot_blocking_probability(load_bp)
-                
-
-        #----------------------------Testar depois-------------------------------------
+        
+        # --------------- Network Load Variation Simulation with Fixed blockages ------------------      
         elif simualtion_type == 2:
                 n_blockages = int(input('\n>>> Enter the number of blocked calls: '))        
                 if n_blockages < 0:
@@ -217,6 +217,7 @@ def main():
                 grafics.plot_topology(A)
                 grafics.plot_blocking_probability(load_bp)
 
+        # --------------- Network Load Percentual Variation Simulation with Fixed Calls ------------------
         elif simualtion_type == 3:                  
                 n_calls = int(input('\n>>> Enter the number of calls: '))
                 if n_calls < 0:
@@ -231,6 +232,7 @@ def main():
                 t2 = time.time()
                 # simulation.SaveResults(sorted(load_bp))
 
+        # --------------- Network Load Variation Simulation with variable BER and Fixed Calls ------------------
         else: 
                 n_calls = int(input('\n>>> Enter the number of calls: '))
                 if n_calls < 0:
@@ -245,10 +247,7 @@ def main():
                 t2 = time.time()   
                 grafics.plot_BER_variation(sorted(load_bp), n_calls)
 
-
-
         # --------------- Results ------------------
-
         simulation.ShowResults(sorted(load_bp), simualtion_type)
         save.Modulation_End(file)
         print('\nTime taken =', t2-t1, 'seconds')

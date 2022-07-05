@@ -3,6 +3,7 @@ import pandas as pd
 import networkx as nx
 import numpy as np
 from RoutingWavelengthAssignment import *
+
 """
 The Grafics class implements methods to generate grafics.
 """
