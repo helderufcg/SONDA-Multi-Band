@@ -16,8 +16,7 @@ or slot blocking probability.
 
 class Simulation_NetworkLoad:
 
-    def __init__(self, n_slots, fiber_type, band_control):
-        self.n_slots = n_slots
+    def __init__(self, fiber_type, band_control):
         self.band_control = band_control
         self.fiber_type = fiber_type
         pass
@@ -31,7 +30,7 @@ class Simulation_NetworkLoad:
 
     def FixedCalls(self, load, n_calls, n_nodes, links, A, N, T, network_type, wavelength_bandwidth, consider_ase_noise, damp):
         call = Call(n_nodes, load, 1)
-        first_fit = FirstFit(self.n_slots)
+        first_fit = FirstFit(self.band_control)
         rwa = RWA()
         count_block = 0
         number = 1
@@ -44,26 +43,28 @@ class Simulation_NetworkLoad:
             interarrival_time = call.InterarrivalTime()
             duration_time = call.DurationTime()
 
-            count_block += rwa.RWA(A, N, T, src_node, dst_node, duration_time, bit_rate, network_type, wavelength_bandwidth, consider_ase_noise, damp, number, first_fit, self.fiber_type, self.band_control)
-                            
+            band, block = rwa.RWA(A, N, T, src_node, dst_node, duration_time, bit_rate, network_type, wavelength_bandwidth, consider_ase_noise, damp, number, first_fit, self.fiber_type, self.band_control)
+            count_block =+ block
+            
             # update all channels that are still in use
-            for link in links:
-                i, j = link
-                for s in range(self.n_slots):
-                    # dijkstra + first-fit
-                    if T[i][j][s] > interarrival_time:
-                        T[i][j][s] -= interarrival_time
-                    else:
-                        T[i][j][s] = 0
-                        if not N[i][j][s]:
-                            N[i][j][s] = 1 # free channel
+            if band >= 0:
+                for link in links:
+                    i, j = link
+                    for s in range(first_fit.n_slots(band)):
+                        # dijkstra + first-fit
+                        if T[band][i][j][s] > interarrival_time:
+                            T[band][i][j][s] -= interarrival_time
+                        else:
+                            T[band][i][j][s] = 0
+                            if not N[band][i][j][s]:
+                                N[band][i][j][s] = 1 # free channel
         
         blocked = count_block/n_calls
         return load, blocked
 
     def FixedBlockages(self, load, n_blockages, n_nodes, links, A, N, T, network_type, wavelength_bandwidth, consider_ase_noise, damp):
         call = Call(n_nodes, load, 1)
-        first_fit = FirstFit(self.n_slots)
+        first_fit = FirstFit(self.band_control)
         rwa = RWA()
         n_calls = 0
         count_block = 0
@@ -77,19 +78,21 @@ class Simulation_NetworkLoad:
             interarrival_time = call.InterarrivalTime()
             duration_time = call.DurationTime()
 
-            count_block += rwa.RWA(A, N, T, src_node, dst_node, duration_time, bit_rate, network_type, wavelength_bandwidth, consider_ase_noise, damp, number, first_fit, self.fiber_type, self.band_control)
+            band, block  = rwa.RWA(A, N, T, src_node, dst_node, duration_time, bit_rate, network_type, wavelength_bandwidth, consider_ase_noise, damp, number, first_fit, self.fiber_type, self.band_control)
+            count_block =+ block
                             
             # update all channels that are still in use
-            for link in links:
-                i, j = link
-                for s in range(self.n_slots):
-                    # dijkstra + first-fit
-                    if T[i][j][s] > interarrival_time:
-                        T[i][j][s] -= interarrival_time
-                    else:
-                        T[i][j][s] = 0
-                        if not N[i][j][s]:
-                            N[i][j][s] = 1 # free channel 
+            if band >= 0:
+                for link in links:
+                    i, j = link
+                    for s in range(first_fit.n_slots(band)):
+                        # dijkstra + first-fit
+                        if  T[band][i][j][s] > interarrival_time:
+                            T[band][i][j][s] -= interarrival_time
+                        else:
+                            T[band][i][j][s] = 0
+                            if not N[band][i][j][s]:
+                                N[band][i][j][s] = 1 # free channel 
 
             n_calls += 1
 
@@ -97,7 +100,7 @@ class Simulation_NetworkLoad:
         return load, blocked
 
     def LoadVariation(self, percentage, load, n_calls, n_nodes, links, A, N, T, network_type, wavelength_bandwidth, consider_ase_noise, damp):
-        first_fit = FirstFit(self.n_slots)
+        first_fit = FirstFit(self.band_control)
         rwa = RWA()
         count_block = 0
         new_load = []
@@ -115,26 +118,28 @@ class Simulation_NetworkLoad:
             interarrival_time = call.InterarrivalTime()
             duration_time = call.DurationTime()
 
-            count_block += rwa.RWA(A, N, T, src_node, dst_node, duration_time, bit_rate, network_type, wavelength_bandwidth, consider_ase_noise, damp, number, first_fit, self.fiber_type, self.band_control)
+            band, block  = rwa.RWA(A, N, T, src_node, dst_node, duration_time, bit_rate, network_type, wavelength_bandwidth, consider_ase_noise, damp, number, first_fit, self.fiber_type, self.band_control)
+            count_block =+ block
                             
             # update all channels that are still in use
-            for link in links:
-                i, j = link
-                for s in range(self.n_slots):
-                    # dijkstra + first-fit
-                    if T[i][j][s] > interarrival_time:
-                        T[i][j][s] -= interarrival_time
-                    else:
-                        T[i][j][s] = 0
-                        if not N[i][j][s]:
-                            N[i][j][s] = 1 # free channel
+            if band >= 0:
+                for link in links:
+                    i, j = link
+                    for s in range(first_fit.n_slots(band)):
+                        # dijkstra + first-fit
+                        if T[band][i][j][s] > interarrival_time:
+                            T[band][i][j][s] -= interarrival_time
+                        else:
+                            T[band][i][j][s] = 0
+                            if not N[band][i][j][s]:
+                                N[band][i][j][s] = 1 # free channel
 
         blocked = count_block/n_calls
         return percentage, blocked
 
     def BERVariation(self, load, n_calls, n_nodes, links, A, N, T, network_type, wavelength_bandwidth, consider_ase_noise, damp):
         call = Call(n_nodes, load, 1)
-        first_fit = FirstFit(self.n_slots)
+        first_fit = FirstFit(self.band_control)
         rwa = RWA()
         n_calls01 = 0
         n_calls02 = 0
@@ -156,7 +161,8 @@ class Simulation_NetworkLoad:
             interarrival_time = call.InterarrivalTime()
             duration_time = call.DurationTime()
 
-            count_block += rwa.RWA(A, N, T, src_node, dst_node, duration_time, bit_rate, network_type, wavelength_bandwidth, consider_ase_noise, damp, number, first_fit, self.fiber_type, self.band_control)
+            band, block  = rwa.RWA(A, N, T, src_node, dst_node, duration_time, bit_rate, network_type, wavelength_bandwidth, consider_ase_noise, damp, number, first_fit, self.fiber_type, self.band_control)
+            count_block =+ block
             count[gen] = count_block
             
             if number > 0 and number <= 25:
@@ -177,16 +183,17 @@ class Simulation_NetworkLoad:
                     n_blockages04 += 1
 
             # update all channels that are still in use
-            for link in links:
-                i, j = link
-                for s in range(self.n_slots):
-                    # dijkstra + first-fit
-                    if T[i][j][s] > interarrival_time:
-                        T[i][j][s] -= interarrival_time
-                    else:
-                        T[i][j][s] = 0
-                        if not N[i][j][s]:
-                            N[i][j][s] = 1 # free channel
+            if band >= 0:
+                for link in links:
+                    i, j = link
+                    for s in range(first_fit.n_slots(band)):
+                        # dijkstra + first-fit
+                        if T[band][i][j][s] > interarrival_time:
+                            T[band][i][j][s] -= interarrival_time
+                        else:
+                            T[band][i][j][s] = 0
+                            if not N[band][i][j][s]:
+                                N[band][i][j][s] = 1 # free channel
 
         blocked = count_block/n_calls
         return load, blocked, n_calls01, n_blockages01, n_calls02, n_blockages02, n_calls03, n_blockages03, n_calls04, n_blockages04

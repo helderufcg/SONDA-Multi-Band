@@ -63,6 +63,8 @@ FL = np.arange(FreqL,FreqU,-BSlot)
 FES = np.arange(FreqS,197.2184E12,-BSlot)
 FEL = np.arange(190.9292E12,185.8263E12,-BSlot)
 
+FreqEL = 190.93E12
+
 """
     Effective S-Band Slots: 650
     Effective C-Band Slots: 351

@@ -23,7 +23,7 @@ class Modulation:
         '''
         
         self.M = [64, 32, 16, 8, 4]
-        self.SNRb01 = [14.8 , 12.6, 10.5, 8.6, 6.8]
+        self.SNRb01 = [14.77 , 12.59, 10.52, 8.58, 6.79]
         
 
     def ThresholdOSNR(self, bit_rate, SNRb): 

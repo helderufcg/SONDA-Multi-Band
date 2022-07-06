@@ -48,10 +48,27 @@ class Band_Selection:
         else:
             return 0
         
-    def getSlotFrequency(self, first_fit, N, T, route):
-        slots = first_fit.FirstFit(N, T, route, 1)
-        if slots == []:
-            frequency = FreqC
+    def getSlotFrequency(self, first_fit, N, T, route, band_control, rs):
+        bands = []
+        Freq = (FreqO, FreqE, FreqS, FreqC, FreqEL) # FreqEL representa a frequência efetiva me que o primeiro slot da banda L é contemplado pelo amplificador
+        
+        if band_control[3]!=0:
+            bands.append(3)
+        if band_control[4]!=0:
+            bands.append(4)
+        if band_control[2]!=0:
+            bands.append(2)
+        
+        if bands == []:
+            frequency = 194.91E12
         else:
-            frequency = FreqC - BSlot*slots[0]
-        return frequency
+            for band in bands: #3 bands: C(3)->L(4)->S(2)
+                slots = first_fit.FirstFit(N, T, route, rs, band)
+                if slots != []:
+                    frequency = Freq[band] - BSlot*slots[0]
+                    b = band
+                    break
+                else:
+                    frequency = 194.91E12
+                    
+        return b, frequency

@@ -22,10 +22,12 @@ class InLineAmplifier:
         :param damp: the desired physical distance between the in line amplifiers.
         """
 
-        namp = math.ceil((dij/damp) - 1)
+        #namp = math.ceil((dij/damp) - 1)
+        namp = math.ceil((dij/damp))
         return namp
 
-    def Noise(self, fiber_loss, dij, damp, frequency, noise_figure):        
+    def Noise(self, FiberLoss, namp, MX_Loss, DX_Loss, frequency, noise_figure):        
         # This is the ASE Noise Modelling        
-        noise = self.NumberOfInlineAmplifiers(dij, damp) * db_to_abs(noise_figure) * h * frequency * BRef * (1 - (fiber_loss**(-1/(1 + self.NumberOfInlineAmplifiers(dij, damp)))))
+        #noise = self.NumberOfInlineAmplifiers(dij, damp) * db_to_abs(noise_figure) * h * frequency * BRef * (1 - (fiber_loss**(-1/(1 + self.NumberOfInlineAmplifiers(dij, damp)))))
+        noise = db_to_abs(noise_figure) * h * frequency * BRef * (namp * ((FiberLoss**(1/namp)) * MX_Loss * DX_Loss - 1))/MX_Loss
         return noise

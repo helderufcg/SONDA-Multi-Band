@@ -15,7 +15,7 @@ class Grafics:
 
     @staticmethod
     def plot_blocking_probability(load_bp):
-        sorted_load_bp = sorted(load_bp) #Organizar plot em ordem
+        sorted_load_bp = sorted(load_bp)
         load, BP = zip(*sorted_load_bp)
         
         plt.plot(load, BP, marker='s', markersize = 8, markeredgewidth = 5, markerfacecolor = 'w', linewidth = 5, label = 'Dijkstra + First Fit')

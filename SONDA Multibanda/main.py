@@ -1,6 +1,5 @@
 from os import system
 from Topology import *
-from BandSelection import *
 from RoutingWavelengthAssignment import RWA, file
 from SaveData import Save
 from Simulation_NetworkLoad import Simulation_NetworkLoad
@@ -13,8 +12,8 @@ import time
 def main():
         system('cls')
         
-        save = Save()
-        save.Modulation_Begin(file)
+        #save = Save()
+        #save.Modulation_Begin(file)
         
         # --------------- Simualtion Types ------------------
         print('\n1 - Network load variation with fixed number of calls  \n2 - Network load variation with fixed number of blockages \n3 - Percentage variation on the network traffic load \n4 - BER variation')
@@ -65,61 +64,73 @@ def main():
         
         # --------------- Band Selection ------------------
         aux = 1
-        all_slots = 0
-        control= [0, 0, 0, 0, 0]
+        band_control= [0, 0, 0, 0, 0]
         if fiber_type == 1 or fiber_type == 2:
                 while(aux!=0):
-                        print('\nAll Slots:', all_slots)
-                        print('\n| O-Band:',control[0],' | E-Band:',control[1],' | S-Band:',control[2],' | C-Band:',control[3],' | L-Band:',control[4],' |')
-                        print('\n1 - O-Band \n2 - E-Band \n3 - S-Band \n4 - C-Band \n5 - L-Band \n6 - Default \n7 - Clear \n8 - Close')
+                        print('\nAll Slots:', sum(band_control))
+                        print('\n| Slots | O-Band:',band_control[0],' | E-Band:',band_control[1],' | S-Band:',band_control[2],' | C-Band:',band_control[3],' | L-Band:',band_control[4],' |')
+                        print('\n1 - O-Band \n2 - E-Band \n3 - S-Band \n4 - C-Band \n5 - L-Band \n6 - Clear \n7 - Close')
                         band = int(input('\n>>> Select the bands (One at a time): '))
                         print('\n')
 
                         if band == 1:
-                                if control[0] == 0:
-                                        all_slots = all_slots + 1400
-                                        control[0] = 1
+                                if band_control[0] == 0:
+                                        slots = int(input("Number of slots available in the O-band (Min 0, Max 1400): "))
+                                        if slots <= 1400 and slots >= 0:
+                                                band_control[0] = slots       
+                                        else:
+                                                raise ValueError('Invalid number of slots.')
                                 else:
                                         raise ValueError('The band has already been selected.')
                         elif band ==2:
-                                if control[1] == 0:
-                                        all_slots = all_slots + 1208
-                                        control[1] = 1
+                                if band_control[1] == 0:
+                                        slots = int(input("Number of slots available in the E-band (Min 0, Max 1208): "))
+                                        if slots <= 1208 and slots >= 0:
+                                                band_control[1] = slots       
+                                        else:
+                                                raise ValueError('Invalid number of slots.')
+
                                 else:
                                         raise ValueError('The band has already been selected.')
                         elif band ==3:
-                                if control[2] == 0:
-                                        all_slots = all_slots + 752
-                                        control[2] = 1
+                                if band_control[2] == 0:
+                                        slots = int(input("Number of slots available in the S-band (Min 0, Max 650): "))
+                                        if slots <= 650 and slots >= 0:
+                                                band_control[2] = slots       
+                                        else:
+                                                raise ValueError('Invalid number of slots.')
+
                                 else:
                                         raise ValueError('The band has already been selected.')        
                         elif band ==4:
-                                if control[3] == 0:
-                                        all_slots = all_slots + 351
-                                        control[3] = 1
+                                if band_control[3] == 0:
+                                        slots = int(input("Number of slots available in the C-band (Min 0, Max 351): "))
+                                        if slots <= 351 and slots >= 0:
+                                                band_control[3] = slots       
+                                        else:
+                                                raise ValueError('Invalid number of slots.')
+                                        
                                 else:
                                         raise ValueError('The band has already been selected.')        
                         elif band ==5:
-                                if control[4] == 0:
-                                        all_slots = all_slots + 566
-                                        control[4] = 1
+                                if band_control[4] == 0:
+                                        slots = int(input("Number of slots available in the L-band (Min 0, Max 409): "))
+                                        if slots <= 409 and slots >= 0:
+                                                band_control[4] = slots       
+                                        else:
+                                                raise ValueError('Invalid number of slots.')
+                                        
                                 else:
                                         raise ValueError('The band has already been selected.')        
                         elif band == 6:
-                                all_slots = 32
-                                control = [0, 0, 0, 1, 0]
+                                band_control = [0, 0, 0, 0, 0]
                         elif band == 7:
-                                all_slots = 0
-                                control = [0, 0, 0, 0, 0]
-                        elif band == 8:
                                 aux = 0
                         else:
                                 raise ValueError('Invalid band.')
         
         else:
                 raise ValueError('Invalid fiber type.')
-        
-        all_slots = 320
         
         # --------------- Network Types ------------------
         print('1 - WDM  \n2 - EON')    
@@ -149,12 +160,11 @@ def main():
                 raise ValueError('The distance between inline amplifiers must be positive.')   
         
         # --------------- Parameters and Simulation  ------------------
-        first_fit = FirstFit(all_slots)
         rwa = RWA()
-        slots, times = rwa.Generate(n_nodes, links, first_fit)
-        N = slots.copy() #shallow copy
-        T = times.copy()
-        simulation = Simulation_NetworkLoad(all_slots, fiber_type, control)
+        band_slots, band_traffic = rwa.Generate(n_nodes, links, band_control)
+        N = band_slots.copy() #shallow copy
+        T = band_traffic.copy()
+        simulation = Simulation_NetworkLoad(fiber_type, band_control)
         grafics = Grafics()
         load_bp = []
         pool = mp.Pool(mp.cpu_count())          
@@ -197,8 +207,8 @@ def main():
                 pool.close()
                 pool.join()
                 t2 = time.time()
-                grafics.plot_topology(A)
                 grafics.plot_blocking_probability(load_bp)
+                grafics.plot_topology(A)
         
         # --------------- Network Load Variation Simulation with Fixed blockages ------------------      
         elif simualtion_type == 2:
@@ -249,7 +259,7 @@ def main():
 
         # --------------- Results ------------------
         simulation.ShowResults(sorted(load_bp), simualtion_type)
-        save.Modulation_End(file)
+        #save.Modulation_End(file)
         print('\nTime taken =', t2-t1, 'seconds')
                
 if __name__ == '__main__':
