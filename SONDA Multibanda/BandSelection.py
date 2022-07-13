@@ -25,9 +25,9 @@ class Band_Selection:
     
     def getNoiseFigureAmplifier(self, frequency):
         if frequency <= FreqO and frequency > FreqE:
-            noise_figure = 5
+            noise_figure = NFO
         elif frequency <= FreqE and frequency > FreqS:
-            noise_figure = 5
+            noise_figure = NFE
         elif frequency <= FreqS and frequency > FreqC:
             noise_figure = NF_S(frequency)
         elif frequency <= FreqC and frequency > FreqL:
@@ -47,28 +47,38 @@ class Band_Selection:
             return A
         else:
             return 0
-        
-    def getSlotFrequency(self, first_fit, N, T, route, band_control, rs):
+    
+    def BandPrefer(self, band_control):
         bands = []
-        Freq = (FreqO, FreqE, FreqS, FreqC, FreqEL) # FreqEL representa a frequência efetiva me que o primeiro slot da banda L é contemplado pelo amplificador
-        
         if band_control[3]!=0:
-            bands.append(3)
+            bands.append(3) # Prefer C-Band
         if band_control[4]!=0:
-            bands.append(4)
+            bands.append(4) # Later, L-Band
         if band_control[2]!=0:
-            bands.append(2)
+            bands.append(2) # Later, S-band
+        if band_control[0]!=0:
+            bands.append(0) # Later, O-band
+        if band_control[1]!=0:
+            bands.append(1) # Finally, E-band
+        
+        return bands
+    
+    def getSlotFrequency(self, first_fit, N, T, route, band_control, required_slots):
+        Freq = (FreqO, FreqE, FreqS, FreqC, FreqEL)
+        bands = self.BandPrefer(band_control)
         
         if bands == []:
             frequency = 194.91E12
         else:
-            for band in bands: #3 bands: C(3)->L(4)->S(2)
-                slots = first_fit.FirstFit(N, T, route, rs, band)
+            for band in bands:
+                slots = first_fit.FirstFit(N, T, route, required_slots, band)
+                
                 if slots != []:
                     frequency = Freq[band] - BSlot*slots[0]
                     b = band
-                    break
+                    break  
                 else:
                     frequency = 194.91E12
+                    b = -1
                     
         return b, frequency

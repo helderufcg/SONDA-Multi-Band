@@ -55,8 +55,8 @@ class RWA:
         
 
     def RWA(self, A, N, T, src_node, dst_node, holding_time, bit_rate, network_type, wavelength_bandwidth, consider_ase_noise, damp, number, first_fit, fiber_type, band_control):
-        # defining the best route according to the dijkstra algorithm 
         
+        # defining the best route according to the dijkstra algorithm 
         route = dijkstra.Dijkstra(A, src_node, dst_node)
         band_selection = Band_Selection()
         
@@ -69,19 +69,21 @@ class RWA:
             SNRb = modulation.SNRb03
         else:    
             SNRb = modulation.SNRb04
-
-        band, frequency = band_selection.getSlotFrequency(first_fit, N, T, route, band_control) #<- Teste e escolha da banda a receber a alocação
-
+        
         if network_type == 1:
             required_slots = math.ceil((wavelength_bandwidth*10**9)/BSlot)
         else:
             if consider_ase_noise == 0:
                 required_slots = modulation.RequiredSlots(bit_rate, BSlot, M[0])
             else:
-                for i in range(len(M)):
-                    if signal.OutputOSNR(A, route, damp, fiber_type, frequency) > modulation.ThresholdOSNR(bit_rate, SNRb[i]):
-                        required_slots = modulation.RequiredSlots(bit_rate, BSlot, M[i])
-                        module = M[i]
+                for a in range(len(M)):
+                    required_slots = modulation.RequiredSlots(bit_rate, BSlot, M[a])
+                    band, frequency = band_selection.getSlotFrequency(first_fit, N, T, route, band_control, required_slots)
+                    if band < 0:
+                        return -1, 1 #blocked
+                    
+                    if signal.OutputOSNR(A, route, damp, fiber_type, frequency) > modulation.ThresholdOSNR(bit_rate, SNRb[a]):
+                        module = M[a]
                         color = 0
                         break
                     else:

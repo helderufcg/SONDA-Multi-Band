@@ -15,13 +15,13 @@ def main():
         #save = Save()
         #save.Modulation_Begin(file)
         
-        # --------------- Simualtion Types ------------------
+        # --------------- Simulation Types ------------------
         print('\n1 - Network load variation with fixed number of calls  \n2 - Network load variation with fixed number of blockages \n3 - Percentage variation on the network traffic load \n4 - BER variation')
-        simualtion_type = int(input('\n>>> Define a simulation to run: '))
-        if simualtion_type == 1 or simualtion_type == 2 or simualtion_type == 3 or simualtion_type == 4:
+        simulation_type = int(input('\n>>> Define a simulation to run: '))
+        if simulation_type == 1 or simulation_type == 2 or simulation_type == 3 or simulation_type == 4:
                 pass
         else:
-                raise ValueError('Invalid simualtion type.')
+                raise ValueError('Invalid simulation type.')
         
         # --------------- Topologies ------------------
         print('\n1 - Simple topology \n2 - Topology 1 \n3 - European \n4 - German \n5 - NSFNet \n6 - PacificBell \n7 - US Backbone')       
@@ -56,7 +56,6 @@ def main():
                 links = linksUSBackbone         
         else:
                 raise ValueError('Invalid network topology.')
-
         
         # --------------- Fiber Selection ------------------
         print('\n1 - ITU-T G652-A \n2 - ITU-T G652-D ')       
@@ -114,8 +113,8 @@ def main():
                                         raise ValueError('The band has already been selected.')        
                         elif band ==5:
                                 if band_control[4] == 0:
-                                        slots = int(input("Number of slots available in the L-band (Min 0, Max 409): "))
-                                        if slots <= 409 and slots >= 0:
+                                        slots = int(input("Number of slots available in the L-band (Min 0, Max 566): "))
+                                        if slots <= 407 and slots >= 0:
                                                 band_control[4] = slots       
                                         else:
                                                 raise ValueError('Invalid number of slots.')
@@ -146,19 +145,19 @@ def main():
                         wavelength_bandwidth = None
         else:
                 raise ValueError('Invalid network type.')
-
+        
         # --------------- Consider ASE Noise ------------------
         consider_ase_noise = int(input('\n>>> Consider ASE noise? (0 - No | 1 - Yes): '))
         if consider_ase_noise == 0 or consider_ase_noise == 1:
                 pass
         else:        
                 raise ValueError('The option entered is invalid.')
-
+        
         # --------------- Distance Between Amplifiers (Damp) ------------------
         damp = float(input('\n>>> Enter the distance between inline amplifiers in Km: '))
         if damp < 0:
-                raise ValueError('The distance between inline amplifiers must be positive.')   
-        
+                raise ValueError('The distance between inline amplifiers must be positive.') 
+
         # --------------- Parameters and Simulation  ------------------
         rwa = RWA()
         band_slots, band_traffic = rwa.Generate(n_nodes, links, band_control)
@@ -170,7 +169,7 @@ def main():
         pool = mp.Pool(mp.cpu_count())          
 
         # --------------- Simulation interval  ------------------
-        if simualtion_type == 1 or simualtion_type == 2 or simualtion_type == 4:
+        if simulation_type == 1 or simulation_type == 2 or simulation_type == 4:
                 min_traffic_load = int(input('\n>>> Enter the min. traffic load: '))    
                 if min_traffic_load < 0:
                         raise ValueError('Invalid network load.')
@@ -194,8 +193,12 @@ def main():
                 if percentage_step < 0:
                         raise ValueError('Invalid percentage.')
         
+        min_traffic_load = 100
+        max_traffic_load = 160
+        traffic_load_step = 10
+        
         # --------------- Network Load Variation Simulation with Fixed Calls ------------------
-        if simualtion_type == 1:
+        if simulation_type == 1:
                 n_calls = int(input('\n>>> Enter the number of calls: '))
                 if n_calls < 0:
                         raise ValueError('Invalid number of calls.')
@@ -207,15 +210,15 @@ def main():
                 pool.close()
                 pool.join()
                 t2 = time.time()
-                grafics.plot_blocking_probability(load_bp)
                 grafics.plot_topology(A)
+                grafics.plot_blocking_probability(load_bp)
         
         # --------------- Network Load Variation Simulation with Fixed blockages ------------------      
-        elif simualtion_type == 2:
+        elif simulation_type == 2:
                 n_blockages = int(input('\n>>> Enter the number of blocked calls: '))        
                 if n_blockages < 0:
                         raise ValueError('Invalid number of blockages.')
-
+                
                 print('\nSimulation in progress...\n')
                 t1 = time.time()
                 for load in range(min_traffic_load, max_traffic_load, traffic_load_step):
@@ -226,9 +229,11 @@ def main():
                 
                 grafics.plot_topology(A)
                 grafics.plot_blocking_probability(load_bp)
+                
+                
 
         # --------------- Network Load Percentual Variation Simulation with Fixed Calls ------------------
-        elif simualtion_type == 3:                  
+        elif simulation_type == 3:                  
                 n_calls = int(input('\n>>> Enter the number of calls: '))
                 if n_calls < 0:
                         raise ValueError('Invalid number of calls.')
@@ -258,9 +263,10 @@ def main():
                 grafics.plot_BER_variation(sorted(load_bp), n_calls)
 
         # --------------- Results ------------------
-        simulation.ShowResults(sorted(load_bp), simualtion_type)
+        simulation.ShowResults(sorted(load_bp), simulation_type)
         #save.Modulation_End(file)
         print('\nTime taken =', t2-t1, 'seconds')
-               
+        
 if __name__ == '__main__':
     main()
+    

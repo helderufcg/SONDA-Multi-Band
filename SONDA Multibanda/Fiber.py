@@ -22,6 +22,5 @@ class Fiber:
         self.alpha_fiber = alpha_fiber
 
     def FiberLoss(self, dij):
-        #fiber_loss = db_to_abs(self.alpha_fiber * dij)
         fiber_loss = e**(-db_to_neper(self.alpha_fiber)*dij)
         return fiber_loss

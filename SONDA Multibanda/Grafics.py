@@ -18,6 +18,7 @@ class Grafics:
         sorted_load_bp = sorted(load_bp)
         load, BP = zip(*sorted_load_bp)
         
+        plt.figure(2)
         plt.plot(load, BP, marker='s', markersize = 8, markeredgewidth = 5, markerfacecolor = 'w', linewidth = 5, label = 'Dijkstra + First Fit')
         plt.yscale('log')
         plt.xlabel('Carga na rede (Erlangs)')
@@ -25,7 +26,6 @@ class Grafics:
         plt.legend()
         plt.grid(True)
         plt.show()
-        plt.figure(1)
 
     @staticmethod
     def plot_boxplot(columns):    
@@ -98,6 +98,8 @@ class Grafics:
 
     @staticmethod
     def plot_topology(A):
+        
+        plt.figure(1)
         G = nx.from_numpy_matrix(A, create_using=nx.DiGraph())
         layout = nx.spring_layout(G)
         nx.draw(G, layout)
@@ -107,4 +109,4 @@ class Grafics:
         nx.draw_networkx_labels(G, layout, font_size=10, font_family='sans-serif')
         labels = nx.get_edge_attributes(G, "weight")
         nx.draw_networkx_edge_labels(G, pos=layout, edge_labels=labels)
-        plt.figure(2)
+        

@@ -20,6 +20,5 @@ class BoosterAmplifier:
 
     def Noise(self, l, MX_Loss, DX_Loss, frequency, noise_figure):    
         # This is the ASE Noise Modelling
-        #noise = db_to_abs(noise_figure) * h * frequency * BRef * (self.Gain(SSS_loss) - 1)
         noise = (db_to_abs(noise_figure) * h * frequency * BRef * l * (self.Gain(MX_Loss, DX_Loss) - 1))/MX_Loss
         return noise

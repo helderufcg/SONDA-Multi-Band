@@ -44,7 +44,7 @@ class Simulation_NetworkLoad:
             duration_time = call.DurationTime()
 
             band, block = rwa.RWA(A, N, T, src_node, dst_node, duration_time, bit_rate, network_type, wavelength_bandwidth, consider_ase_noise, damp, number, first_fit, self.fiber_type, self.band_control)
-            count_block =+ block
+            count_block += block
             
             # update all channels that are still in use
             if band >= 0:
@@ -79,7 +79,7 @@ class Simulation_NetworkLoad:
             duration_time = call.DurationTime()
 
             band, block  = rwa.RWA(A, N, T, src_node, dst_node, duration_time, bit_rate, network_type, wavelength_bandwidth, consider_ase_noise, damp, number, first_fit, self.fiber_type, self.band_control)
-            count_block =+ block
+            count_block  += block
                             
             # update all channels that are still in use
             if band >= 0:
@@ -119,7 +119,7 @@ class Simulation_NetworkLoad:
             duration_time = call.DurationTime()
 
             band, block  = rwa.RWA(A, N, T, src_node, dst_node, duration_time, bit_rate, network_type, wavelength_bandwidth, consider_ase_noise, damp, number, first_fit, self.fiber_type, self.band_control)
-            count_block =+ block
+            count_block += block
                             
             # update all channels that are still in use
             if band >= 0:
@@ -162,7 +162,7 @@ class Simulation_NetworkLoad:
             duration_time = call.DurationTime()
 
             band, block  = rwa.RWA(A, N, T, src_node, dst_node, duration_time, bit_rate, network_type, wavelength_bandwidth, consider_ase_noise, damp, number, first_fit, self.fiber_type, self.band_control)
-            count_block =+ block
+            count_block += block
             count[gen] = count_block
             
             if number > 0 and number <= 25:

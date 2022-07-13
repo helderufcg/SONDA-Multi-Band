@@ -34,7 +34,7 @@ class Signal:
     def Summation(self, A, route, damp, fiber, frequency):
         ni = []
         
-        #noise_figure = 5
+        # noise_figure = 5
         # Variable option below
         noise_figure = Band.getNoiseFigureAmplifier(frequency)
         
@@ -61,7 +61,6 @@ class Signal:
         return input_noise_power
 
     def OutputNoisePower(self, A, route, damp, fiber, frequency):
-        #output_noise_power = self.InputNoisePower() + self.Summation(A, route, damp, fiber, frequency)    
         output_noise_power = self.InputNoisePower() + sss_loss*self.Summation(A, route, damp, fiber, frequency)
         return output_noise_power
 
