@@ -47,8 +47,7 @@ class Signal:
             namp = inline_amplifier.NumberOfInlineAmplifiers(dij, damp)
             ni.append(inline_amplifier.Noise(fiber.FiberLoss(dij), namp, mx_loss, dx_loss, frequency, noise_figure))
         
-        summation = nb + sum(ni) + np
-        return summation
+        return nb + sum(ni) + np 
    
     def ModulationFormat(self, modulation_format):    
         return modulation_format    
@@ -57,14 +56,12 @@ class Signal:
         return self.input_power
 
     def InputNoisePower(self):    
-        input_noise_power = self.input_power/self.input_OSNR 
-        return input_noise_power
+        return self.input_power/self.input_OSNR 
+        
 
     def OutputNoisePower(self, A, route, damp, fiber, frequency):
-        output_noise_power = self.InputNoisePower() + sss_loss*self.Summation(A, route, damp, fiber, frequency)
-        return output_noise_power
+        return self.InputNoisePower() + sss_loss*self.Summation(A, route, damp, fiber, frequency)
 
     def OutputOSNR(self, A, route, damp, fiber_type, frequency):
         fiber = Fiber(fiber_type, frequency)       
-        output_OSNR = self.input_power/(self.OutputNoisePower(A, route, damp, fiber, frequency))
-        return output_OSNR
+        return self.input_power/(self.OutputNoisePower(A, route, damp, fiber, frequency))

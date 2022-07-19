@@ -24,12 +24,9 @@ class Modulation:
         
         self.M = [64, 32, 16, 8, 4]
         self.SNRb01 = [14.77 , 12.59, 10.52, 8.58, 6.79]
-        
 
     def ThresholdOSNR(self, bit_rate, SNRb): 
-        threshold_OSNR = (0.5 * (bit_rate) * db_to_abs(SNRb)) / BRef        
-        return threshold_OSNR
-
+        return (0.5 * (bit_rate) * db_to_abs(SNRb)) / BRef        
+    
     def RequiredSlots(self, bit_rate, b_slot, M):        
-        required_slots = math.ceil(bit_rate / (b_slot * numPolarizations * math.log2(M)))
-        return required_slots         
+        return math.ceil(bit_rate / (b_slot * numPolarizations * math.log2(M)))         

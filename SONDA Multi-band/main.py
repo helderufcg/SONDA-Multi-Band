@@ -4,7 +4,6 @@ from RoutingWavelengthAssignment import RWA, file
 from SaveData import Save
 from Simulation_NetworkLoad import Simulation_NetworkLoad
 from Grafics import Grafics
-from FirstFit_ResourceAlgorithm import FirstFit
 import multiprocessing as mp
 import time
 

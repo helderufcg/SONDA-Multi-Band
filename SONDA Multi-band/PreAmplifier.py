@@ -15,10 +15,8 @@ class PreAmplifier:
         pass
 
     def Gain(self, SSS_Loss, MX_Loss, DX_Loss):
-        self.gain = SSS_Loss * MX_Loss * (SSS_Loss**2)
-        return self.gain
-
+        return SSS_Loss * MX_Loss * (SSS_Loss**2)
+         
     def Noise(self, l, SSS_Loss, MX_Loss, DX_Loss, frequency, noise_figure):    
         # This is the ASE Noise Modelling
-        noise = (db_to_abs(noise_figure) * h * frequency * BRef * l * (self.Gain(SSS_Loss, MX_Loss, DX_Loss) - 1))/(SSS_Loss*MX_Loss*DX_Loss)
-        return noise
+        return (db_to_abs(noise_figure) * h * frequency * BRef * l * (self.Gain(SSS_Loss, MX_Loss, DX_Loss) - 1))/(SSS_Loss*MX_Loss*DX_Loss)

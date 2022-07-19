@@ -1,8 +1,8 @@
-from cmath import e, exp
-from UnitConversion import db_to_abs, db_to_neper
-from BandSelection import Band_Selection
+from cmath import e
+from UnitConversion import db_to_neper
+from Band import Band
 
-Banda = Band_Selection()
+Banda = Band()
 
 """
 The Fiber class represents a Fiber segment.
@@ -15,12 +15,9 @@ class Fiber:
         """
         :param alpha_fiber: fiber loss coefficient, measured in dB per kilometer
         """
-        #alpha_fiber = 0.22
+        #self.alpha_fiber = 0.22
         # Variable option below
-        alpha_fiber = Banda.getSlotsAttenuation(fiber_type, frequency)
-        
-        self.alpha_fiber = alpha_fiber
+        self.alpha_fiber = Banda.SlotsAttenuation(fiber_type, frequency)
 
     def FiberLoss(self, dij):
-        fiber_loss = e**(-db_to_neper(self.alpha_fiber)*dij)
-        return fiber_loss
+        return e**(-db_to_neper(self.alpha_fiber)*dij)

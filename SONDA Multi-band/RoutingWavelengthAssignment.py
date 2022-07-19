@@ -1,5 +1,5 @@
 from BandConstants import BSlot
-from BandSelection import Band_Selection
+from Band import Band
 from SaveData import Save
 from Dijkstra_RoutingAlgorithm import Dijkstra
 from Signal import Signal 
@@ -58,7 +58,7 @@ class RWA:
         
         # defining the best route according to the dijkstra algorithm 
         route = dijkstra.Dijkstra(A, src_node, dst_node)
-        band_selection = Band_Selection()
+        band = Band()
         
         M = modulation.M
         if number > 0 and number <= 25:
@@ -78,11 +78,11 @@ class RWA:
             else:
                 for a in range(len(M)):
                     required_slots = modulation.RequiredSlots(bit_rate, BSlot, M[a])
-                    band, frequency = band_selection.getSlotFrequency(first_fit, N, T, route, band_control, required_slots)
+                    band, slot_frequency = Band.RequiredSlotFrequency(first_fit, N, T, route, band_control, required_slots)
                     if band < 0:
                         return -1, 1 #blocked
                     
-                    if signal.OutputOSNR(A, route, damp, fiber_type, frequency) > modulation.ThresholdOSNR(bit_rate, SNRb[a]):
+                    if signal.OutputOSNR(A, route, damp, fiber_type, slot_frequency) > modulation.ThresholdOSNR(bit_rate, SNRb[a]):
                         module = M[a]
                         color = 0
                         break

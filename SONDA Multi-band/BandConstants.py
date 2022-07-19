@@ -15,6 +15,12 @@ import numpy as np
     numPolarizations: Is used to choose whether one or two polarizations are used to transmit the signal.     
 """
 
+"""
+    Effective S-Band Slots: 650
+    Effective C-Band Slots: 351
+    Effective L-Band Slots: 407
+"""
+
 c = 299792458
 h = 6.62606957E-34
 BRef = 12.5E9
@@ -64,9 +70,3 @@ FES = np.arange(FreqS,197.2184E12,-BSlot)
 FEL = np.arange(190.9292E12,185.8263E12,-BSlot)
 
 FreqEL = 190.92E12
-
-"""
-    Effective S-Band Slots: 650
-    Effective C-Band Slots: 351
-    Effective L-Band Slots: 407
-"""

@@ -25,8 +25,8 @@ class Simulation_NetworkLoad:
         random.seed()
         param_01 = 1-(percentage/200)
         param_02 = 1+(percentage/200)
-        new_load = random.uniform(load*param_01, load*param_02)
-        return new_load
+        return random.uniform(load*param_01, load*param_02)
+        
 
     def FixedCalls(self, load, n_calls, n_nodes, links, A, N, T, network_type, wavelength_bandwidth, consider_ase_noise, damp):
         call = Call(n_nodes, load, 1)
