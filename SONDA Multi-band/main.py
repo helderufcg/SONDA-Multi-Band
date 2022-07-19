@@ -192,10 +192,6 @@ def main():
                 if percentage_step < 0:
                         raise ValueError('Invalid percentage.')
         
-        min_traffic_load = 100
-        max_traffic_load = 160
-        traffic_load_step = 10
-        
         # --------------- Network Load Variation Simulation with Fixed Calls ------------------
         if simulation_type == 1:
                 n_calls = int(input('\n>>> Enter the number of calls: '))

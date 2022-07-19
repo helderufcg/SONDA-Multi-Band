@@ -1,4 +1,4 @@
-from BandSelection import Band_Selection
+from Band import Band
 from SSS_MX_DX import SSS_MX_DX
 from Fiber import Fiber
 from BoosterAmplifier import BoosterAmplifier
@@ -9,7 +9,7 @@ sss_mx_dx = SSS_MX_DX()
 booster_amplifier = BoosterAmplifier()
 inline_amplifier = InLineAmplifier()
 pre_amplifier = PreAmplifier()
-Band = Band_Selection()
+Band = Band()
 
 sss_loss = sss_mx_dx.SSS_loss
 mx_loss  = sss_mx_dx.MX_loss
@@ -36,7 +36,7 @@ class Signal:
         
         # noise_figure = 5
         # Variable option below
-        noise_figure = Band.getNoiseFigureAmplifier(frequency)
+        noise_figure = Band.NoiseFigureAmplifier(frequency)
         
         l = len(route)-1
         np = pre_amplifier.Noise(l, sss_loss, mx_loss, dx_loss, frequency, noise_figure)

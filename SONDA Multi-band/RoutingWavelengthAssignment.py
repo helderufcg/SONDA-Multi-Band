@@ -78,8 +78,8 @@ class RWA:
             else:
                 for a in range(len(M)):
                     required_slots = modulation.RequiredSlots(bit_rate, BSlot, M[a])
-                    band, slot_frequency = Band.RequiredSlotFrequency(first_fit, N, T, route, band_control, required_slots)
-                    if band < 0:
+                    band_select, slot_frequency = band.RequiredSlotFrequency(first_fit, N, T, route, band_control, required_slots)
+                    if band_select < 0:
                         return -1, 1 #blocked
                     
                     if signal.OutputOSNR(A, route, damp, fiber_type, slot_frequency) > modulation.ThresholdOSNR(bit_rate, SNRb[a]):
@@ -92,7 +92,7 @@ class RWA:
                     return -1, 1 #blocked              
         
         # defining the slots to be alocated First_fit.get_N_slots()
-        slots_vector = first_fit.FirstFit(N, T, route, required_slots, band)
+        slots_vector = first_fit.FirstFit(N, T, route, required_slots, band_select)
 
         if slots_vector:
             # if the resulting slot vector is not contiguous         
@@ -104,11 +104,11 @@ class RWA:
                 rcurr = route[r]
                 rnext = route[r+1]
                 for i in range(required_slots):
-                    N[band][rcurr][rnext][slots_vector[i]] = 0
-                    T[band][rcurr][rnext][slots_vector[i]] = holding_time
+                    N[band_select][rcurr][rnext][slots_vector[i]] = 0
+                    T[band_select][rcurr][rnext][slots_vector[i]] = holding_time
             
             #save.Modulation(file, module)
 
-            return band, 0  # allocated
+            return band_select, 0  # allocated
         else:
             return -1, 1  # blocked
