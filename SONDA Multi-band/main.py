@@ -112,7 +112,7 @@ def main():
                                         raise ValueError('The band has already been selected.')        
                         elif band ==5:
                                 if band_control[4] == 0:
-                                        slots = int(input("Number of slots available in the L-band (Min 0, Max 566): "))
+                                        slots = int(input("Number of slots available in the L-band (Min 0, Max 407): "))
                                         if slots <= 407 and slots >= 0:
                                                 band_control[4] = slots       
                                         else:
